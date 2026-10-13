@@ -1,57 +1,57 @@
 {
-  "mode": "demo",
-  "updatedAt": "2026-10-13T00:17:00+09:00",
+  "mode": "live",
+  "updatedAt": "2026-10-13T09:52:02+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
-      "price": 190.75,
+      "price": 226.320007,
       "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     },
     "TSLA": {
-      "price": 412.2,
+      "price": 378.029999,
       "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     },
     "AMZN": {
-      "price": 256.4,
+      "price": 259.529999,
       "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     },
     "GOOGL": {
-      "price": 338.3,
+      "price": 352.720001,
       "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     },
     "KRW-BTC": {
-      "price": 125700000,
+      "price": 110863000.0,
       "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "source": "Upbit KRW-BTC 공식 일봉",
       "stale": false
     },
     "034020.KS": {
-      "price": 79500,
-      "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "price": 78000.0,
+      "date": "2026-10-08",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     },
     "267260.KS": {
-      "price": 781000,
-      "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "price": 606000.0,
+      "date": "2026-10-08",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     },
     "011200.KS": {
-      "price": 21300,
-      "date": "2026-10-12",
-      "source": "DEMO (가상 가격)",
+      "price": 20800.0,
+      "date": "2026-10-08",
+      "source": "Yahoo Finance (query1.finance.yahoo.com)",
       "stale": false
     }
   },
   "errors": [],
-  "note": "모든 가격과 수익률은 시연용 가상 데이터입니다. 실제 가격이 아닙니다."
+  "notes": "주식은 각 거래소의 최근 완료된 일봉, BTC는 업비트 최근 완료된 원화 일봉입니다."
 }
