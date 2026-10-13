@@ -9407,17 +9407,27 @@
     },
     {
       "day": "2026-10-13",
-      "updatedAt": "2026-10-13T15:44:25+09:00",
+      "updatedAt": "2026-10-13T18:11:41+09:00",
+      "priceDates": {
+        "NVDA": "2026-10-12",
+        "TSLA": "2026-10-12",
+        "AMZN": "2026-10-12",
+        "GOOGL": "2026-10-12",
+        "KRW-BTC": "2026-10-12",
+        "034020.KS": "2026-10-13",
+        "267260.KS": "2026-10-13",
+        "011200.KS": "2026-10-13"
+      },
       "returns": {
-        "eunji": 22.427787,
-        "dongmin": 22.427787,
-        "geumseung": 8.977556,
+        "eunji": 22.427783,
+        "dongmin": 22.427783,
+        "geumseung": 9.975062,
         "bitna": 7.350032,
         "ojing": 4.94541,
         "seongsu": -15.049438,
-        "jeonguk": -16.15566,
         "yumin": -17.018713,
-        "gwangil": -32.391048
+        "jeonguk": -17.216981,
+        "gwangil": -34.040047
       },
       "ranks": {
         "eunji": 1,
@@ -9426,16 +9436,22 @@
         "bitna": 4,
         "ojing": 5,
         "seongsu": 6,
-        "jeonguk": 7,
-        "yumin": 8,
+        "yumin": 7,
+        "jeonguk": 8,
         "gwangil": 9
       },
       "losers": [
-        "jeonguk",
         "yumin",
+        "jeonguk",
         "gwangil"
       ],
-      "final": false
+      "final": false,
+      "manualInput": {
+        "path": "inputs/closing-prices.json",
+        "sha": "67ec787e385d75d38160f835c5670b1b65029c64",
+        "verifiedAt": "2026-10-13T17:43:26+09:00",
+        "commit": "fd35a1a607c0d6da3df0254b036e2ccdb7dbbfb5"
+      }
     }
   ]
 }
