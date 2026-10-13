@@ -1,0 +1,70 @@
+name: 술값배틀 · 종가 자동 수집 + 사이트 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # UTC 기준. KST 오전 09:30 (미국 전일 장 마감 + BTC 일봉 완료)
+    - cron: '30 0 * * *'
+    # KST 오후 17:30 (한국 당일 장 마감까지 반영)
+    - cron: '30 8 * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sool-battle-pages
+  cancel-in-progress: false
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Python 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 마감된 시세 조회하고 순위 이력 저장
+        run: python scripts/update_prices.py
+
+      - name: JSON 결과를 저장소에 기록
+        run: |
+          git config user.name "sool-battle-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/prices.json data/history.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh battle closes"
+            git push
+          fi
+
+      - name: 공개 사이트 파일 준비
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -R assets _site/
+          cp -R data _site/
+          touch _site/.nojekyll
+
+      - name: GitHub Pages 설정
+        uses: actions/configure-pages@v5
+
+      - name: 사이트 파일 업로드
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: GitHub Pages 공개
+        id: deployment
+        uses: actions/deploy-pages@v4
