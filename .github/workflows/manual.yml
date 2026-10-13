@@ -1,48 +1,9 @@
-name: 술값배틀 · 수동 종가 입력 및 사이트 배포
+name: 술값배틀 · 검증된 종가 입력 및 사이트 배포
 
 on:
-  workflow_dispatch:
-    inputs:
-      trade_date:
-        description: "한국시간 스냅샷 날짜 (YYYY-MM-DD, 2026년; 종가 기준일과 구분)"
-        required: true
-        type: string
-      price_dates:
-        description: "8종목별 확인된 종가 기준일 JSON (NVDA, TSLA, AMZN, GOOGL, KRW-BTC, 034020.KS, 267260.KS, 011200.KS)"
-        required: true
-        type: string
-      nvda:
-        description: "엔비디아 NVDA (달러)"
-        required: true
-        type: string
-      tsla:
-        description: "테슬라 TSLA (달러)"
-        required: true
-        type: string
-      amzn:
-        description: "아마존 AMZN (달러)"
-        required: true
-        type: string
-      googl:
-        description: "구글 GOOGL (달러)"
-        required: true
-        type: string
-      krw_btc:
-        description: "비트코인 KRW-BTC (원)"
-        required: true
-        type: string
-      kr_034020:
-        description: "두산에너빌리티 034020 (원)"
-        required: true
-        type: string
-      kr_267260:
-        description: "HD현대일렉트릭 267260 (원)"
-        required: true
-        type: string
-      kr_011200:
-        description: "HMM 011200 (원)"
-        required: true
-        type: string
+  push:
+    branches: [main]
+    paths: ['inputs/closing-prices.json']
 
 permissions:
   contents: write
@@ -63,25 +24,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
           persist-credentials: true
+      - name: 최신 입력 파일인지 확인
+        id: input
+        run: |
+          event_input_sha="$(git rev-parse HEAD:inputs/closing-prices.json)"
+          git fetch origin main
+          latest_input_sha="$(git rev-parse origin/main:inputs/closing-prices.json)"
+          if [ "$event_input_sha" != "$latest_input_sha" ]; then
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "더 최신 입력이 있어 오래된 실행을 생략합니다."
+            exit 0
+          fi
+          git checkout -B main origin/main
+          echo "current=true" >> "$GITHUB_OUTPUT"
       - name: Python 준비
+        if: steps.input.outputs.current == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: 직접 입력한 가격 저장 (외부 API 호출 없음)
+      - name: 입력 파일 검증 및 가격 저장 (외부 API 호출 없음)
+        if: steps.input.outputs.current == 'true'
         id: manual
         env:
-          INPUT_TRADE_DATE: ${{ inputs.trade_date }}
-          INPUT_PRICE_DATES: ${{ inputs.price_dates }}
-          INPUT_NVDA: ${{ inputs.nvda }}
-          INPUT_TSLA: ${{ inputs.tsla }}
-          INPUT_AMZN: ${{ inputs.amzn }}
-          INPUT_GOOGL: ${{ inputs.googl }}
-          INPUT_KRW_BTC: ${{ inputs.krw_btc }}
-          INPUT_KR_034020: ${{ inputs.kr_034020 }}
-          INPUT_KR_267260: ${{ inputs.kr_267260 }}
-          INPUT_KR_011200: ${{ inputs.kr_011200 }}
-        run: python scripts/manual_update.py
+          INPUT_COMMIT: ${{ github.sha }}
+        run: python scripts/manual_update.py --input-file inputs/closing-prices.json
       - name: JSON 저장
         if: steps.manual.outputs.changed == 'true'
         run: |
@@ -89,8 +58,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/prices.json data/history.json
           if ! git diff --cached --quiet; then
-            git commit -m "data: manually set closing prices"
-            git push
+            git commit -m "data: apply verified closing prices"
+            git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
         if: steps.manual.outputs.changed == 'true'
