@@ -151,7 +151,7 @@ def fetch_korean_stock(symbol: str, now: datetime) -> dict:
         sources.append({"price": price, "date": day.isoformat(), "source": "네이버 금융 일봉", "stale": False})
     except Exception as exc:
         errors.append("Naver: " + str(exc))
-
+        print(f"[NAVER ERROR] {symbol}: {type(exc).__name__}: {exc}", file=sys.stderr)
     try:
         sources.append(fetch_stock(symbol, now))
     except Exception as exc:
