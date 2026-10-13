@@ -16,6 +16,7 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, quote
 from urllib.request import Request, urlopen
+from xml.etree import ElementTree
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -118,6 +119,66 @@ def fetch_stock(symbol: str, now: datetime) -> dict:
     raise RuntimeError(f"{symbol}: Yahoo 일봉 조회 실패: {error}")
 
 
+
+def fetch_korean_stock(symbol: str, now: datetime) -> dict:
+    """네이버 국내주식 일봉을 우선 사용하고 Yahoo 종가와 거래일을 비교합니다."""
+    local_now = now.astimezone(KST)
+    sources = []
+    errors = []
+    try:
+        url = "https://fchart.stock.naver.com/sise.nhn?" + urlencode({
+            "symbol": symbol.split(".")[0], "timeframe": "day",
+            "count": 35, "requestType": 0,
+        })
+        request = Request(url, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/"})
+        with urlopen(request, timeout=15) as response:
+            root = ElementTree.fromstring(response.read(1000000))
+        candles = []
+        for item in root.iter("item"):
+            parts = (item.get("data") or "").split("|")
+            if len(parts) < 5:
+                continue
+            day = datetime.strptime(parts[0], "%Y%m%d").date()
+            close = float(parts[4])
+            if day > FINAL_DAY or day > local_now.date() or close <= 0:
+                continue
+            if day == local_now.date() and local_now.time() < clock(15, 45):
+                continue
+            candles.append((day, close))
+        if not candles:
+            raise ValueError("완료된 네이버 일봉 없음")
+        day, price = max(candles)
+        sources.append({"price": price, "date": day.isoformat(), "source": "네이버 금융 일봉", "stale": False})
+    except Exception as exc:
+        errors.append("Naver: " + str(exc))
+
+    try:
+        sources.append(fetch_stock(symbol, now))
+    except Exception as exc:
+        errors.append("Yahoo: " + str(exc))
+    if not sources:
+        raise RuntimeError("; ".join(errors))
+    selected = dict(max(sources, key=lambda x: (x["date"], x["source"] == "네이버 금융 일봉")))
+    if len(sources) == 2 and sources[0]["date"] == sources[1]["date"]:
+        if abs(sources[0]["price"] - sources[1]["price"]) > 0.5:
+            selected = dict(sources[0])
+            selected["stale"] = True
+            selected["warning"] = "동일 거래일 소스별 종가 불일치 — 직접 확인 필요"
+
+    # 휴장일 계산기는 없으므로, 예상 영업일보다 오래되면 경고(공휴일에는 경고 가능).
+    expected = min(local_now.date(), date(2026, 12, 30))
+    if expected == local_now.date() and local_now.time() < clock(15, 45):
+        expected -= timedelta(days=1)
+    while expected.weekday() >= 5 or expected == date(2026, 12, 31):
+        expected -= timedelta(days=1)
+    if date.fromisoformat(selected["date"]) < expected:
+        selected["stale"] = True
+        selected["warning"] = f"종가 날짜 {selected['date']}, 예상 최신 거래일 {expected} — 확인 필요"
+    if errors:
+        selected["source"] += " (일부 제공처 조회 실패)"
+    return selected
+
+
 def fetch_bitcoin(now: datetime) -> dict:
     """업비트 KRW-BTC 일봉. 한국시간 09:00가 다음 일봉 시작/전일 일봉 확정 시각."""
     params = {"market": "KRW-BTC", "count": 7}
@@ -182,9 +243,13 @@ def update(now: datetime | None = None) -> dict:
 
     for symbol in SYMBOLS:
         try:
-            quote_data = fetch_bitcoin(now) if symbol == "KRW-BTC" else fetch_stock(symbol, now)
+            quote_data = (fetch_bitcoin(now) if symbol == "KRW-BTC" else
+                          fetch_korean_stock(symbol, now) if symbol in KR_SYMBOLS else fetch_stock(symbol, now))
             markets[symbol] = quote_data
-            new_success.add(symbol)
+            if not quote_data.get("stale"):
+                new_success.add(symbol)
+            else:
+                errors.append(f"{symbol}: {quote_data.get('warning', '종가 검증 필요')}")
             print(f"[OK] {symbol:11s} {quote_data['date']} {quote_data['price']:,.2f}")
         except Exception as exc:
             prev = previous_real.get(symbol, {})
@@ -207,6 +272,8 @@ def update(now: datetime | None = None) -> dict:
         and now >= LOCK_TIME
         and all(date.fromisoformat(markets[s]["date"]) <= FINAL_DAY for s in SYMBOLS)
         and markets["KRW-BTC"]["date"] == "2026-12-31"
+        and all(markets[s]["date"] == "2026-12-30" and not markets[s].get("stale") for s in KR_SYMBOLS)
+        and all(markets[s]["date"] == "2026-12-31" and not markets[s].get("stale") for s in USD_SYMBOLS)
     )
     result = {
         "mode": mode, "updatedAt": now.isoformat(timespec="seconds"),
