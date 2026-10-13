@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "trade_date": "2026-10-13",
+  "verified_at": "2026-10-13T17:43:26+09:00",
+  "markets": {
+    "NVDA": {
+      "price": 226.32,
+      "date": "2026-10-12",
+      "currency": "USD",
+      "source": {
+        "name": "Yahoo Finance",
+        "url": "https://finance.yahoo.com/quote/NVDA/history/"
+      }
+    },
+    "TSLA": {
+      "price": 378.03,
+      "date": "2026-10-12",
+      "currency": "USD",
+      "source": {
+        "name": "Yahoo Finance",
+        "url": "https://finance.yahoo.com/quote/TSLA/history/"
+      }
+    },
+    "AMZN": {
+      "price": 259.53,
+      "date": "2026-10-12",
+      "currency": "USD",
+      "source": {
+        "name": "Yahoo Finance",
+        "url": "https://finance.yahoo.com/quote/AMZN/history/"
+      }
+    },
+    "GOOGL": {
+      "price": 352.72,
+      "date": "2026-10-12",
+      "currency": "USD",
+      "source": {
+        "name": "MarketBeat",
+        "url": "https://www.marketbeat.com/stocks/NASDAQ/GOOGL/chart/"
+      }
+    },
+    "KRW-BTC": {
+      "price": 110863000,
+      "date": "2026-10-12",
+      "currency": "KRW",
+      "source": {
+        "name": "Upbit",
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-13T00%3A00%3A00Z&count=1"
+      }
+    },
+    "034020.KS": {
+      "price": 70200,
+      "date": "2026-10-13",
+      "currency": "KRW",
+      "source": {
+        "name": "한국경제",
+        "url": "https://markets.hankyung.com/stock/034020"
+      }
+    },
+    "267260.KS": {
+      "price": 560000,
+      "date": "2026-10-13",
+      "currency": "KRW",
+      "source": {
+        "name": "한국경제",
+        "url": "https://markets.hankyung.com/stock/267260"
+      }
+    },
+    "011200.KS": {
+      "price": 22050,
+      "date": "2026-10-13",
+      "currency": "KRW",
+      "source": {
+        "name": "한국경제",
+        "url": "https://markets.hankyung.com/stock/011200"
+      }
+    }
+  }
+}
