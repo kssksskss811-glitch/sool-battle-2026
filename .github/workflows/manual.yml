@@ -4,7 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       trade_date:
-        description: "가격 기준일 (YYYY-MM-DD, 2026년)"
+        description: "한국시간 스냅샷 날짜 (YYYY-MM-DD, 2026년; 종가 기준일과 구분)"
+        required: true
+        type: string
+      price_dates:
+        description: "8종목별 확인된 종가 기준일 JSON (NVDA, TSLA, AMZN, GOOGL, KRW-BTC, 034020.KS, 267260.KS, 011200.KS)"
         required: true
         type: string
       nvda:
@@ -51,7 +55,11 @@ concurrency:
 
 jobs:
   manual-and-deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,8 +69,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: 직접 입력한 가격 저장 (외부 API 호출 없음)
+        id: manual
         env:
           INPUT_TRADE_DATE: ${{ inputs.trade_date }}
+          INPUT_PRICE_DATES: ${{ inputs.price_dates }}
           INPUT_NVDA: ${{ inputs.nvda }}
           INPUT_TSLA: ${{ inputs.tsla }}
           INPUT_AMZN: ${{ inputs.amzn }}
@@ -73,6 +83,7 @@ jobs:
           INPUT_KR_011200: ${{ inputs.kr_011200 }}
         run: python scripts/manual_update.py
       - name: JSON 저장
+        if: steps.manual.outputs.changed == 'true'
         run: |
           git config user.name "sool-battle-manual"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -82,7 +93,11 @@ jobs:
             git push
           fi
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+        if: steps.manual.outputs.changed == 'true'
+      - uses: actions/upload-pages-artifact@v4
+        if: steps.manual.outputs.changed == 'true'
         with:
           path: .
       - uses: actions/deploy-pages@v4
+        if: steps.manual.outputs.changed == 'true'
+        id: deployment
