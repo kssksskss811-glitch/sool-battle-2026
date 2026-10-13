@@ -7,8 +7,8 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css?v=daily-once-20261013">
-  <script defer src="./assets/app.js?v=daily-once-20261013"></script>
+  <link rel="stylesheet" href="./assets/style.css?v=manual-no-api-20261013">
+  <script defer src="./assets/app.js?v=manual-no-api-20261013"></script>
 </head>
 <body>
 <div class="app">
@@ -25,10 +25,10 @@
           </span>
         </div>
       </div>
-      <div class="update-schedule" aria-label="매일 오후 5시 30분 한국시간 기준 8종목 종가 일괄 수집">
-        <span class="schedule-caption">⏱ 하루 1회 자동 수집 <small>매일 · 한국시간</small></span>
-        <span class="schedule-chip"><span>미장 · 국장 · 비트코인</span><strong>오후 05:30 일괄 갱신</strong></span>
-        <span class="schedule-detail">※ 확정 종가 기준 · 미국 주식은 최근 마감 거래일 · 실행 지연 가능</span>
+      <div class="update-schedule" aria-label="API 자동 수집 중지, GitHub에서 수동 종가 입력">
+        <span class="schedule-caption">✏️ 수동 종가 입력 <small>관리자 필요할 때만</small></span>
+        <span class="schedule-chip"><span>미장 · 국장 · 비트코인</span><strong>자동 수집 중지 · 직접 입력</strong></span>
+        <span class="schedule-detail">※ 시세 API 호출 없음 · GitHub에서 직접 가격과 기준일 입력</span>
       </div>
     </div>
     <div class="header-right">
@@ -92,7 +92,7 @@
       </section>
     </div>
   </main>
-  <footer class="page-foot">※ 주식은 확정 종가 기준, 비트코인은 업비트 원화 일봉(09시 마감). 과거 순위는 매일 한국시간 17:30에 확인 가능했던 가격으로 복원합니다. 시세 제공처 사정으로 기록이 일부 누락될 수 있습니다.</footer>
+  <footer class="page-foot">※ 주식은 확정 종가 기준, 비트코인은 업비트 원화 일봉(09시 마감). 순위 차트는 저장된 과거 기록 및 수동 입력한 주간 기록을 보여줍니다. 시세 제공처 사정으로 기록이 일부 누락될 수 있습니다.</footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 

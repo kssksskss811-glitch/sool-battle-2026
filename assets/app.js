@@ -84,9 +84,9 @@ function renderRisk() {
 function renderHeader(){
   $("asOf").textContent=priceData?.updatedAt ? "갱신 "+kstFmt(priceData.updatedAt)+" KST" : "시세 조회 중";
   const label=$("dataStatus");
-  const stale=ranked.some(p=>p.stale||p.price===null) || priceData?.mode!=="live";
+  const stale=ranked.some(p=>p.stale||p.price===null) || !["live","manual"].includes(priceData?.mode);
   label.classList.toggle("partial",stale);
-  label.innerHTML=stale?"<i></i> 일부 종가 지연 · 잠정":"<i></i> 확정 종가 자동 갱신";
+  label.innerHTML=stale?"<i></i> 일부 종가 지연 · 잠정":priceData?.mode==="manual"?"<i></i> 수동 입력 기준":"<i></i> 확정 종가 자동 갱신";
   const cut=ranked.length>=4 && Math.abs((ranked[5]?.roi??1e99)-(ranked[6]?.roi??-1e99))<1e-9;
   const cautions=[];
   if(stale)cautions.push("⚠ 일부 종목 시세가 지연되어 현재 순위는 잠정입니다.");
