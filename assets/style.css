@@ -232,3 +232,58 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
   .header-right{gap:7px}
   #asOf{font-size:10px}
 }
+
+/* 참가자 상세: 데스크톱 카드와 모바일 바텀시트. */
+.rank-row{width:100%;background:transparent;border:0;border-bottom:1px solid #ebeff6;border-radius:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.rank-row:hover{background:#f6f9ff}
+.rank-row:focus-visible{outline:2px solid #2867ec;outline-offset:-2px;background:#f1f6ff}
+.detail-dialog{position:fixed;inset:0;width:min(860px,calc(100% - 32px));height:fit-content;max-height:92dvh;margin:auto;padding:0;border:1px solid #dfe7f2;border-radius:20px;color:#172037;background:#fff;box-shadow:0 20px 80px #10203938;overscroll-behavior:contain}
+.detail-dialog::backdrop{background:#18283d70;backdrop-filter:blur(3px)}
+.detail-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px;background:#fff;border-bottom:1px solid #e9edf5}
+.detail-eyebrow{font-size:10px;color:#8b99ad;margin-bottom:3px}
+.detail-top h2{font-size:22px;color:var(--person);overflow-wrap:anywhere}
+.detail-close{flex:0 0 36px;width:36px;height:36px;border:1px solid #e2e8f2;border-radius:50%;background:#f7f9fc;color:#627087;font-size:17px;cursor:pointer}
+.detail-close:focus-visible,.detail-dialog select:focus-visible{outline:2px solid #2867ec;outline-offset:2px}
+.detail-body{padding:16px 20px 20px}
+.detail-person-control{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:14px;font-size:10px;color:#7889a0}
+.detail-dialog select{min-width:0;max-width:100%;border:1px solid #dfe7f2;border-radius:8px;background:#f8faff;padding:7px 9px;font:inherit;font-size:11px;color:#435877}
+.detail-quote{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+.detail-avatar{flex:0 0 42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--person);color:#fff;font-size:19px;font-weight:900}
+.detail-quote>div{min-width:0}
+.detail-quote p{font-size:12px;color:#64758f;font-weight:700}
+.detail-quote strong{display:block;font-size:27px;line-height:1.5}
+.detail-quote small{display:block;font-size:10px;color:#8998ae;line-height:1.6;overflow-wrap:anywhere}
+.detail-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.detail-card{min-width:0;border:1px solid #e8edf5;border-radius:11px;background:#f8faff;padding:11px 12px}
+.detail-card>span{display:block;font-size:10px;color:#7c8ba1}
+.detail-card>strong{display:block;margin:5px 0 3px;font-size:19px;color:#2c466b;overflow-wrap:anywhere}
+.detail-card>small{display:block;font-size:10px;color:#8392a9;line-height:1.5;overflow-wrap:anywhere}
+.detail-chart-section{margin-top:20px}
+.detail-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.detail-body h3{font-size:14px;margin:0;font-weight:900}
+.detail-chart-controls{display:flex;gap:6px;max-width:100%}
+.detail-chart{margin-top:10px;width:100%;height:240px;border:1px solid #e7edf6;border-radius:12px;background:#fff}
+.detail-chart svg{display:block;width:100%;height:100%}
+.detail-chart-empty{height:100%;display:flex;align-items:center;justify-content:center;color:#8292a9;font-size:12px;text-align:center;line-height:1.8}
+.detail-muted{font-size:10px;color:#8a98ab;line-height:1.7;margin-top:7px;overflow-wrap:anywhere}
+.detail-duel{margin-top:18px;padding:14px;border:1px solid #e6ebf4;border-radius:12px;background:#fbfcff}
+.detail-duel p{font-size:12px;color:#687b95;line-height:1.8;margin-top:9px;overflow-wrap:anywhere}
+.detail-duel b{color:#334f76}
+.detail-duel .detail-peer{font-size:11px;color:#7a8da7}
+.detail-assumption{font-size:10px;color:#8a98ab;line-height:1.8;margin-top:13px;overflow-wrap:anywhere}
+@media(max-width:600px){
+  .detail-dialog{inset:auto 0 0;width:100%;max-width:none;max-height:92dvh;margin:0;border-radius:18px 18px 0 0;border-bottom:0}
+  .detail-top{padding:13px 14px}
+  .detail-top h2{font-size:19px}
+  .detail-body{padding:12px 14px 18px}
+  .detail-person-control{margin-bottom:12px}
+  .detail-quote strong{font-size:23px}
+  .detail-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .detail-card{padding:9px 10px}
+  .detail-card>strong{font-size:18px}
+  .detail-chart-head{align-items:flex-start;gap:8px}
+  .detail-chart-controls{width:100%}
+  .detail-chart-controls select{flex:1}
+  .detail-chart{height:190px}
+  .detail-duel{padding:11px}
+}

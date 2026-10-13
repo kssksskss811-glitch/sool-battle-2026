@@ -83,7 +83,7 @@ function renderRankRows() {
   $("rankRows").innerHTML=ranked.map(p=>{
     const fill=Math.max(3,100*Math.abs(p.roi||0)/maxAbs);
     const perf=p.roi===null?"#99a4b4":p.roi>=0?"#ef4056":"#2867ec";
-    return `<div class="rank-row" style="--person:${p.color};--perf:${perf}">
+    return `<button type="button" class="rank-row" data-person="${p.id}" aria-haspopup="dialog" aria-label="${escapeHtml(p.name)} ${escapeHtml(p.asset)} 상세 보기" style="--person:${p.color};--perf:${perf}">
       ${rankBadge(p)}
       <div class="person"><span class="person-avatar">${p.name[0]}</span><div style="min-width:0">
         <div class="person-name">${p.name}${p.stale?'<span title="가격 지연 · 순위 잠정"> ⚠</span>':""}</div>
@@ -91,7 +91,7 @@ function renderRankRows() {
       </div></div>
       <div class="performance"><div class="track"><i style="width:${fill.toFixed(1)}%"></i></div><div class="return">${p.roi===null?"—":fmtPct(p.roi)}</div></div>
       <div class="price">${p.price===null?"미수집":fmtPrice(p.price,p.cur)}<small>기준 ${fmtPrice(p.start,p.cur)}</small></div>
-    </div>`;
+    </button>`;
   }).join("");
 }
 function renderRisk() {
@@ -287,6 +287,7 @@ function renderAll(){
   if(!priceData)return;
   ranked=computeRanking(priceData);
   renderHeader();renderRankRows();renderRisk();buildChart();
+  globalThis.BattleDetails?.refresh();
 }
 async function loadData(){
   try{
@@ -317,6 +318,7 @@ async function loadData(){
   }
 }
 function init(){
+  globalThis.BattleDetails?.init({getData:()=>({participants:PARTICIPANTS,prices:priceData,history})});
   $("period").addEventListener("change",buildChart);
   $("legend").addEventListener("click",e=>{
     const button=e.target.closest("[data-series]");

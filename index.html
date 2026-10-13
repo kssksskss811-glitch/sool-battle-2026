@@ -7,8 +7,9 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css?v=close-dates-header-v1">
-  <script defer src="./assets/app.js?v=close-dates-header-v1"></script>
+  <link rel="stylesheet" href="./assets/style.css?v=participant-detail-v1">
+  <script defer src="./assets/details.js?v=participant-detail-v1"></script>
+  <script defer src="./assets/app.js?v=participant-detail-v1"></script>
 </head>
 <body>
 <div class="app">
@@ -46,7 +47,7 @@
       <div class="panel-heading">
         <div>
           <h1 id="leaderTitle"><span aria-hidden="true">🏆</span> 수익률 랭킹</h1>
-          <p>2026.01 시작가 대비 · 참가자 9명 · 종목 8개</p>
+          <p>2026.01 시작가 대비 · 참가자 9명 · 이름을 누르면 상세</p>
         </div>
         <span class="end-date">결산 12.31</span>
       </div>
@@ -99,6 +100,30 @@
   <footer class="page-foot">※ 주식은 확정 종가 기준, 비트코인은 업비트 원화 일봉(09시 마감). 순위 차트는 저장된 과거 기록 및 수동 입력한 주간 기록을 보여줍니다. 시세 제공처 사정으로 기록이 일부 누락될 수 있습니다.</footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
+<dialog id="participantDetail" class="detail-dialog" aria-labelledby="detailTitle" aria-describedby="detailAssumption">
+  <div class="detail-top">
+    <div><p class="detail-eyebrow">나의 종목 카드</p><h2 id="detailTitle">참가자 상세</h2></div>
+    <button type="button" class="detail-close" id="detailClose" aria-label="상세 화면 닫기">✕</button>
+  </div>
+  <div class="detail-body">
+    <div class="detail-person-control"><label for="detailPerson">사람 바꾸기</label><select id="detailPerson"></select></div>
+    <div id="detailSummary"></div>
+    <section class="detail-chart-section" aria-labelledby="detailChartTitle">
+      <div class="detail-chart-head"><h3 id="detailChartTitle">종목 기록 차트</h3>
+        <div class="detail-chart-controls">
+          <select id="detailMetric" aria-label="상세 차트 값"><option value="return">수익률</option><option value="price">환산 가격</option></select>
+          <select id="detailPeriod" aria-label="상세 차트 기간"><option value="30">최근 30일</option><option value="90">최근 90일</option><option value="all">전체 기록</option></select>
+        </div>
+      </div>
+      <div id="detailChart" class="detail-chart"></div>
+      <p id="detailChartRange" class="detail-muted"></p>
+      <p class="detail-muted">날짜는 저장일(KST)입니다. 가격은 기록된 수익률과 시작가격으로 환산하며 실제 거래일별 원시 시세와 다를 수 있습니다.</p>
+    </section>
+    <section class="detail-duel" aria-labelledby="detailDuelTitle"><h3 id="detailDuelTitle">대결 한눈에</h3><div id="detailDuel"></div></section>
+    <p id="detailRecords" class="detail-muted"></p>
+    <p id="detailAssumption" class="detail-assumption">수익률 격차는 %p, 현재 가격에서의 추가 상승률은 %입니다. 다른 종목의 가격 고정 가정이며 같은 종목을 고른 사람은 함께 움직입니다. 동률 계산가는 근삿값이고 실제 호가 단위는 반영하지 않습니다. 모임 순위 비교용 계산입니다.</p>
+  </div>
+</dialog>
 
 <script>
 /* 2026년 미장/국장 남은 실제 정규장 거래일 수: 거래소 현지 날짜·시각 기준.
