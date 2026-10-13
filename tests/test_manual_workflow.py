@@ -20,7 +20,9 @@ class WorkflowInputGateTests(unittest.TestCase):
         script = "\n".join(line[10:] for line in block.splitlines()) + "\n"
         event = workflow.split("permissions:", 1)[0]
         self.assertIn("branches: [main]", event)
-        self.assertIn("paths: ['inputs/closing-prices.json']", event)
+        self.assertIn("      - inputs/closing-prices.json", event)
+        self.assertIn("      - index.html", event)
+        self.assertIn("      - assets/**", event)
         self.assertNotIn("workflow_dispatch", event)
         self.assertNotIn("schedule:", event)
         self.assertNotIn("update_prices.py", workflow)

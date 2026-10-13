@@ -34,6 +34,31 @@ const kstFmt=iso=>{
   if(Number.isNaN(+date))return "—";
   return new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit",hour12:false}).format(date);
 };
+function sourceDayDate(day){
+  if(typeof day!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(day))return null;
+  const parsed=new Date(day+"T00:00:00Z");
+  return Number.isNaN(+parsed)||parsed.toISOString().slice(0,10)!==day?null:parsed;
+}
+function marketDateLabel(markets,symbols){
+  const dates=symbols.map(symbol=>sourceDayDate(markets?.[symbol]?.date)?markets[symbol].date:null);
+  if(dates.every(day=>day&&day===dates[0]))return dates[0].replaceAll("-",".");
+  if(dates.every(day=>!day))return "미확인";
+  return symbols.map((symbol,i)=>symbol.replace(".KS","")+" "+(dates[i]?dates[i].slice(5).replace("-","/"):"미확인")).join(" · ");
+}
+function bitcoinCloseLabel(day){
+  const parsed=sourceDayDate(day);
+  if(!parsed)return "미확인";
+  parsed.setUTCDate(parsed.getUTCDate()+1);
+  return parsed.toISOString().slice(0,10).replaceAll("-",".")+" 09:00 KST";
+}
+function dataUpdateLabel(iso){
+  if(typeof iso!=="string"||!/^\d{4}-\d{2}-\d{2}T/.test(iso))return "갱신 시각 미확인";
+  const date=new Date(iso);
+  if(Number.isNaN(+date))return "갱신 시각 미확인";
+  const parts={};
+  for(const part of new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(date))parts[part.type]=part.value;
+  return `데이터 갱신 ${parts.year}.${parts.month}.${parts.day} ${parts.hour}:${parts.minute} KST`;
+}
 function computeRanking(data) {
   return PARTICIPANTS.map((p,i)=>{
     const quote=data.markets?.[p.ticker];
@@ -82,11 +107,14 @@ function renderRisk() {
     </div>`).join("");
 }
 function renderHeader(){
-  $("asOf").textContent=priceData?.updatedAt ? "갱신 "+kstFmt(priceData.updatedAt)+" KST" : "시세 조회 중";
+  $("asOf").textContent=dataUpdateLabel(priceData?.updatedAt);
+  $("krCloseDay").textContent=marketDateLabel(priceData?.markets,["034020.KS","267260.KS","011200.KS"]);
+  $("usCloseDay").textContent=marketDateLabel(priceData?.markets,["NVDA","TSLA","AMZN","GOOGL"]);
+  $("btcCandleClose").textContent=bitcoinCloseLabel(priceData?.markets?.["KRW-BTC"]?.date);
   const label=$("dataStatus");
-  const stale=ranked.some(p=>p.stale||p.price===null) || !["live","manual"].includes(priceData?.mode);
+  const stale=ranked.some(p=>p.stale||p.price===null||!sourceDayDate(p.sourceDay)) || !["live","manual"].includes(priceData?.mode);
   label.classList.toggle("partial",stale);
-  label.innerHTML=stale?"<i></i> 일부 종가 지연 · 잠정":priceData?.mode==="manual"?"<i></i> 수동 입력 기준":"<i></i> 확정 종가 자동 갱신";
+  label.innerHTML=stale?"<i></i> 일부 종가 확인 필요":"<i></i> 확인된 종가 기준";
   const cut=ranked.length>=4 && Math.abs((ranked[5]?.roi??1e99)-(ranked[6]?.roi??-1e99))<1e-9;
   const cautions=[];
   if(stale)cautions.push("⚠ 일부 종목 시세가 지연되어 현재 순위는 잠정입니다.");

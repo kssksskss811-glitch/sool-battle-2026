@@ -3,7 +3,10 @@ name: 술값배틀 · 검증된 종가 입력 및 사이트 배포
 on:
   push:
     branches: [main]
-    paths: ['inputs/closing-prices.json']
+    paths:
+      - inputs/closing-prices.json
+      - index.html
+      - assets/**
 
 permissions:
   contents: write
@@ -27,13 +30,38 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: true
+      - name: 입력 갱신과 UI 배포 구분
+        id: route
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          git cat-file -e "$BEFORE^{commit}"
+          git cat-file -e "$AFTER^{commit}"
+          if git diff --quiet "$BEFORE" "$AFTER" -- inputs/closing-prices.json; then
+            echo "input=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "input=true" >> "$GITHUB_OUTPUT"
+          fi
+          if git diff --quiet "$BEFORE" "$AFTER" -- index.html assets; then
+            echo "ui=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ui=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: UI 전용 배포의 최신 데이터 가져오기
+        if: steps.route.outputs.input == 'false'
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
       - name: 최신 입력 파일인지 확인
+        if: steps.route.outputs.input == 'true'
         id: input
         run: |
           event_input_sha="$(git rev-parse HEAD:inputs/closing-prices.json)"
           git fetch origin main
           latest_input_sha="$(git rev-parse origin/main:inputs/closing-prices.json)"
           if [ "$event_input_sha" != "$latest_input_sha" ]; then
+            git checkout -B main origin/main
             echo "current=false" >> "$GITHUB_OUTPUT"
             echo "더 최신 입력이 있어 오래된 실행을 생략합니다."
             exit 0
@@ -62,11 +90,11 @@ jobs:
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
-        if: steps.manual.outputs.changed == 'true'
+        if: steps.manual.outputs.changed == 'true' || steps.route.outputs.ui == 'true'
       - uses: actions/upload-pages-artifact@v4
-        if: steps.manual.outputs.changed == 'true'
+        if: steps.manual.outputs.changed == 'true' || steps.route.outputs.ui == 'true'
         with:
           path: .
       - uses: actions/deploy-pages@v4
-        if: steps.manual.outputs.changed == 'true'
+        if: steps.manual.outputs.changed == 'true' || steps.route.outputs.ui == 'true'
         id: deployment

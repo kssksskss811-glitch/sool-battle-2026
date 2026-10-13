@@ -7,8 +7,8 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css?v=manual-no-api-20261013">
-  <script defer src="./assets/app.js?v=manual-no-api-20261013"></script>
+  <link rel="stylesheet" href="./assets/style.css?v=close-dates-header-v1">
+  <script defer src="./assets/app.js?v=close-dates-header-v1"></script>
 </head>
 <body>
 <div class="app">
@@ -25,10 +25,14 @@
           </span>
         </div>
       </div>
-      <div class="update-schedule" aria-label="API 자동 수집 중지, GitHub에서 수동 종가 입력">
-        <span class="schedule-caption">✏️ 수동 종가 입력 <small>관리자 필요할 때만</small></span>
-        <span class="schedule-chip"><span>미장 · 국장 · 비트코인</span><strong>자동 수집 중지 · 직접 입력</strong></span>
-        <span class="schedule-detail">※ 시세 API 호출 없음 · GitHub에서 직접 가격과 기준일 입력</span>
+      <div class="update-schedule" aria-label="종가 확인 예약 시각">
+        <span class="schedule-caption">🔎 키오 종가 확인</span>
+        <span class="schedule-chip">매일 <strong>17:30 KST</strong></span>
+      </div>
+      <div class="quote-dates" aria-label="시장별 종가 기준일과 코인 일봉 마감 시각">
+        <span class="quote-date"><span>🇰🇷 국장 종가</span><strong id="krCloseDay">확인 중</strong></span>
+        <span class="quote-date"><span>🇺🇸 미장 종가</span><strong id="usCloseDay">확인 중</strong></span>
+        <span class="quote-date quote-date-btc"><span>₿ 코인 일봉 마감</span><strong id="btcCandleClose">확인 중</strong></span>
       </div>
     </div>
     <div class="header-right">

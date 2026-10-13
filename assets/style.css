@@ -200,3 +200,35 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
   .update-schedule{flex-wrap:wrap;gap:5px}
   .header-right{margin-left:0}
 }
+
+/* 종가 기준일, 일봉 마감, 실제 데이터 갱신 시각을 구분한다. */
+.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 18px;padding:13px 0}
+.header-main{gap:8px}
+.header-right{align-self:start;justify-content:flex-end;flex-wrap:wrap;max-width:340px;gap:8px}
+#asOf{flex-basis:100%;text-align:right;font-size:11px;line-height:1.5}
+.quote-dates{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.quote-date{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 7px;min-width:0;max-width:100%;padding:6px 8px;border:1px solid #e1e8f3;border-radius:8px;background:#fff;font-size:10px;color:#687993}
+.quote-date>span{white-space:nowrap}
+.quote-date strong{min-width:0;font-size:11px;line-height:1.5;color:#2c405f;overflow-wrap:anywhere}
+.schedule-caption{font-size:11px;white-space:normal}
+.schedule-chip{white-space:normal}
+@media(min-width:921px){.dashboard{height:calc(100dvh - 195px);min-height:620px}}
+@media(max-width:760px){
+  .topbar{grid-template-columns:minmax(0,1fr);gap:10px}
+  .header-right{max-width:none;width:100%;justify-content:flex-start;align-self:auto;margin-left:0}
+  #asOf{text-align:left}
+}
+@media(max-width:600px){
+  .topbar{padding:10px 0}
+  .brand-line{gap:7px}
+  .brand{flex-basis:100%;font-size:20px}
+  .header-main{gap:8px}
+  .update-schedule{flex-wrap:nowrap;gap:7px}
+  .schedule-caption{flex-basis:auto;font-size:10px}
+  .quote-dates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .quote-date{padding:6px 7px;gap:3px 6px}
+  .quote-date-btc{grid-column:1 / -1}
+  .quote-date strong{font-size:10px}
+  .header-right{gap:7px}
+  #asOf{font-size:10px}
+}
