@@ -231,7 +231,11 @@ def make_ranking(markets: dict) -> tuple[dict, dict, list]:
         rows.append((person_id, roi, index))
     rows.sort(key=lambda r: (-r[1], r[2]))
     returns = {p: round(roi, 6) for p, roi, _ in rows}
-    ranks = {p: i + 1 for i, (p, _, _) in enumerate(rows)}
+    # 공동 순위: 1, 1, 3 (competition ranking), 동일 종목/동일 기준가는 항상 동률
+    ranks = {}
+    for i, (person, roi, _) in enumerate(rows):
+        first = next(j for j, (_, r, _) in enumerate(rows) if abs(roi - r) < 1e-9)
+        ranks[person] = first + 1
     losers = [p for p, _, _ in rows[-3:]] if len(rows) == len(PEOPLE) else []
     return returns, ranks, losers
 
@@ -312,8 +316,18 @@ def update(now: datetime | None = None) -> dict:
             records = [r for r in records if r.get("day") != today]
             records.append(record)
             records.sort(key=lambda r: r.get("day", ""))
-            records = records[-180:]
+            records = records[-400:]
     save_json(HISTORY_FILE, {"history": records})
+
+    # 첫 실행 시 2026-01-01부터의 과거 확정 종가로 순위 이력을 복원.
+    # 이후에는 기존 매일 자동 기록을 누적하고, 1월 이력이 보존됩니다.
+    if mode == "live":
+        try:
+            from backfill_history import backfill_if_missing
+            backfill_if_missing(now)
+        except Exception as exc:
+            # 과거 복원 실패는 오늘 종가 수집/배포까지 막지 않습니다.
+            print(f"[HISTORY WARN] 과거 순위 복원 실패: {exc}", file=sys.stderr)
 
     print(f"작업 완료: mode={mode}, 새로 수집한 종목={len(new_success)}/{len(SYMBOLS)}, locked={locked}")
     if errors:
