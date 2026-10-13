@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """술값배틀 2026: 외부 종가 → data/prices.json 및 data/history.json
 
-주식은 Yahoo Finance의 비공식 일봉 chart API, 비트코인은 Upbit 공식 일봉 API 사용.
+미국주식은 Yahoo Finance만, 국내주식은 네이버 금융만, 비트코인은 Upbit 공식 일봉 API 사용.
 시세 제공이 지연되거나 차단될 수 있으므로 해당 종목을 stale로 표시합니다.
 추가 pip 패키지 없이 Python 3.11+ 표준 라이브러리로 실행합니다.
 """
@@ -54,7 +54,7 @@ def save_json(path: Path, data: dict) -> None:
     temp.replace(path)
 
 
-def get_json(url: str, attempts: int = 2) -> object:
+def get_json(url: str, attempts: int = 1) -> object:
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; SoolBattle2026/1.0; GitHubAction)",
         "Accept": "application/json",
@@ -73,120 +73,97 @@ def get_json(url: str, attempts: int = 2) -> object:
 
 
 def fetch_stock(symbol: str, now: datetime) -> dict:
-    """시장에서 실제로 정규장 종료가 완료된 마지막 일봉만 선택."""
-    korea = symbol in KR_SYMBOLS
-    market_tz = KST if korea else ET
-    close_gate = clock(15, 45) if korea else clock(16, 15)
-    local_now = now.astimezone(market_tz)
-    start = int(datetime(2026, 10, 1, tzinfo=timezone.utc).timestamp())
-    # 2027년 이후에도 마지막 종가를 찾을 수 있도록 고정된 조회 기간 사용.
-    end_limit = datetime(2027, 1, 5, tzinfo=timezone.utc)
-    query_end = min(now.astimezone(timezone.utc) + timedelta(days=2), end_limit)
-    end = int(query_end.timestamp())
-    params = urlencode({"period1": start, "period2": end, "interval": "1d"})
-    error = None
-    for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
-        try:
-            url = f"https://{host}/v8/finance/chart/{quote(symbol)}?{params}"
-            doc = get_json(url)
-            result = doc["chart"]["result"][0]
-            times = result["timestamp"]
-            closes = result["indicators"]["quote"][0]["close"]
-            candidates = []
-            for stamp, close in zip(times, closes):
-                if close is None or float(close) <= 0:
-                    continue
-                day = datetime.fromtimestamp(stamp, timezone.utc).astimezone(market_tz).date()
-                if day > FINAL_DAY:
-                    continue
-                if day > local_now.date():
-                    continue
-                if day == local_now.date() and local_now.time() < close_gate:
-                    # 장중 진행 중인 일봉을 종가로 쓰지 않음.
-                    continue
-                candidates.append((day, float(close)))
-            if not candidates:
-                raise RuntimeError("마감 완료된 일봉 데이터가 없습니다")
-            traded_day, price = max(candidates, key=lambda c: c[0])
-            return {
-                "price": round(price, 6),
-                "date": traded_day.isoformat(),
-                "source": f"Yahoo Finance ({host})",
-                "stale": False,
-            }
-        except (KeyError, TypeError, ValueError, IndexError, RuntimeError) as exc:
-            error = exc
-    raise RuntimeError(f"{symbol}: Yahoo 일봉 조회 실패: {error}")
-
+    """미국 주식 4종목만 Yahoo chart API에서 종목당 1회 조회."""
+    if symbol not in USD_SYMBOLS:
+        raise ValueError(f"미국 주식이 아닌 종목은 Yahoo로 조회하지 않습니다: {symbol}")
+    local_now = now.astimezone(ET)
+    begin_day = max(date(2026, 10, 1), min((now - timedelta(days=20)).date(), date(2026, 12, 20)))
+    begin = int(datetime.combine(begin_day, clock(), tzinfo=timezone.utc).timestamp())
+    end_cap = datetime(2027, 1, 5, tzinfo=timezone.utc)
+    end = int(min(now.astimezone(timezone.utc) + timedelta(days=2), end_cap).timestamp())
+    url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{quote(symbol)}?"
+           + urlencode({"period1": begin, "period2": end, "interval": "1d"}))
+    # 재시도 및 query2 우회 없이 정확히 한 번 요청. 실패하면 기존 가격을 stale로 보존.
+    doc = get_json(url, attempts=1)
+    try:
+        data = doc["chart"]["result"][0]
+        candidates = []
+        for stamp, close in zip(data["timestamp"], data["indicators"]["quote"][0]["close"]):
+            if close is None or float(close) <= 0:
+                continue
+            day = datetime.fromtimestamp(stamp, timezone.utc).astimezone(ET).date()
+            if day > FINAL_DAY or day > local_now.date():
+                continue
+            if day == local_now.date() and local_now.time() < clock(16, 15):
+                continue
+            candidates.append((day, float(close)))
+        if not candidates:
+            raise RuntimeError("마감된 미국 정규장 일봉이 없습니다")
+        day, price = max(candidates)
+        return {
+            "price": round(price, 6), "date": day.isoformat(),
+            "source": "Yahoo Finance (query1.finance.yahoo.com)", "stale": False,
+        }
+    except (TypeError, KeyError, IndexError, ValueError) as exc:
+        raise RuntimeError(f"{symbol}: Yahoo 일봉 응답 파싱 실패: {exc}") from exc
 
 
 def fetch_korean_stock(symbol: str, now: datetime) -> dict:
-    """네이버 국내주식 일봉을 우선 사용하고 Yahoo 종가와 거래일을 비교합니다."""
+    """네이버 차트 API만 사용하여 국내 주식 종목당 1회 조회(Yahoo 교차 조회 없음)."""
+    if symbol not in KR_SYMBOLS:
+        raise ValueError(f"한국 종목이 아닙니다: {symbol}")
     local_now = now.astimezone(KST)
-    sources = []
-    errors = []
+    url = "https://fchart.stock.naver.com/sise.nhn?" + urlencode({
+        "symbol": symbol.split(".")[0], "timeframe": "day",
+        "count": 20, "requestType": 0,
+    })
+    request = Request(url, headers={
+        "User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/",
+    })
+    with urlopen(request, timeout=15) as response:
+        xml_bytes = response.read(1000000)
+    # 네이버 XML의 EUC-KR/CP949 선언은 표준 ElementTree가 직접 처리 못할 수 있습니다.
     try:
-        url = "https://fchart.stock.naver.com/sise.nhn?" + urlencode({
-            "symbol": symbol.split(".")[0], "timeframe": "day",
-            "count": 35, "requestType": 0,
-        })
-        request = Request(url, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/"})
-        with urlopen(request, timeout=15) as response:
-            xml_bytes = response.read(1000000)
-        # 네이버 차트 XML은 EUC-KR/CP949 선언을 사용할 수 있어
-        # 먼저 유니코드로 변환하고 XML 인코딩 선언을 제거합니다.
+        xml_text = xml_bytes.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        xml_text = xml_bytes.decode("cp949")
+    xml_text = xml_text.lstrip()
+    if xml_text.startswith("<?xml"):
+        xml_text = xml_text.split("?>", 1)[1]
+    root = ElementTree.fromstring(xml_text)
+
+    candidates = []
+    for item in root.iter("item"):
+        parts = (item.get("data") or "").split("|")
+        if len(parts) < 5:
+            continue
         try:
-            xml_text = xml_bytes.decode("utf-8-sig")
-        except UnicodeDecodeError:
-            xml_text = xml_bytes.decode("cp949")
-        xml_text = xml_text.lstrip()
-        if xml_text.startswith("<?xml"):
-            xml_text = xml_text.split("?>", 1)[1]
-        root = ElementTree.fromstring(xml_text)
-        candles = []
-        for item in root.iter("item"):
-            parts = (item.get("data") or "").split("|")
-            if len(parts) < 5:
-                continue
             day = datetime.strptime(parts[0], "%Y%m%d").date()
             close = float(parts[4])
-            if day > FINAL_DAY or day > local_now.date() or close <= 0:
-                continue
-            if day == local_now.date() and local_now.time() < clock(15, 45):
-                continue
-            candles.append((day, close))
-        if not candles:
-            raise ValueError("완료된 네이버 일봉 없음")
-        day, price = max(candles)
-        sources.append({"price": price, "date": day.isoformat(), "source": "네이버 금융 일봉", "stale": False})
-    except Exception as exc:
-        errors.append("Naver: " + str(exc))
-        print(f"[NAVER ERROR] {symbol}: {type(exc).__name__}: {exc}", file=sys.stderr)
+        except ValueError:
+            continue
+        if close <= 0 or day > FINAL_DAY or day > local_now.date():
+            continue
+        if day == local_now.date() and local_now.time() < clock(15, 45):
+            continue
+        candidates.append((day, close))
+    if not candidates:
+        raise RuntimeError(f"{symbol}: 완료된 네이버 일봉 없음")
 
-    try:
-        sources.append(fetch_stock(symbol, now))
-    except Exception as exc:
-        errors.append("Yahoo: " + str(exc))
-    if not sources:
-        raise RuntimeError("; ".join(errors))
-    selected = dict(max(sources, key=lambda x: (x["date"], x["source"] == "네이버 금융 일봉")))
-    if len(sources) == 2 and sources[0]["date"] == sources[1]["date"]:
-        if abs(sources[0]["price"] - sources[1]["price"]) > 0.5:
-            selected = dict(sources[0])
-            selected["stale"] = True
-            selected["warning"] = "동일 거래일 소스별 종가 불일치 — 직접 확인 필요"
-
-    # 휴장일 계산기는 없으므로, 예상 영업일보다 오래되면 경고(공휴일에는 경고 가능).
+    day, price = max(candidates)
+    selected = {
+        "price": price, "date": day.isoformat(),
+        "source": "네이버 금융 일봉", "stale": False,
+    }
+    # 달력상 휴일은 일부 반영 못 할 수 있으나, 오래된 거래일은 경고합니다.
     expected = min(local_now.date(), date(2026, 12, 30))
     if expected == local_now.date() and local_now.time() < clock(15, 45):
         expected -= timedelta(days=1)
     while expected.weekday() >= 5 or expected == date(2026, 12, 31):
         expected -= timedelta(days=1)
-    if date.fromisoformat(selected["date"]) < expected:
+    if day < expected:
         selected["stale"] = True
-        selected["warning"] = f"종가 날짜 {selected['date']}, 예상 최신 거래일 {expected} — 확인 필요"
-    if errors:
-        selected["source"] += " (일부 제공처 조회 실패)"
+        selected["warning"] = f"종가 날짜 {day}, 예상 최신 거래일 {expected} — 확인 필요"
     return selected
 
 
@@ -319,15 +296,8 @@ def update(now: datetime | None = None) -> dict:
             records = records[-400:]
     save_json(HISTORY_FILE, {"history": records})
 
-    # 첫 실행 시 2026-01-01부터의 과거 확정 종가로 순위 이력을 복원.
-    # 이후에는 기존 매일 자동 기록을 누적하고, 1월 이력이 보존됩니다.
-    if mode == "live":
-        try:
-            from backfill_history import backfill_if_missing
-            backfill_if_missing(now)
-        except Exception as exc:
-            # 과거 복원 실패는 오늘 종가 수집/배포까지 막지 않습니다.
-            print(f"[HISTORY WARN] 과거 순위 복원 실패: {exc}", file=sys.stderr)
+    # 과거 2026년 이력은 이미 data/history.json에 보관합니다.
+    # 요청량 최소화를 위해 정기 실행에서는 과거 종가 백필 API를 호출하지 않습니다.
 
     print(f"작업 완료: mode={mode}, 새로 수집한 종목={len(new_success)}/{len(SYMBOLS)}, locked={locked}")
     if errors:
