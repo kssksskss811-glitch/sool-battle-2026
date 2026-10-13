@@ -143,3 +143,60 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
 @media(max-width:420px){
  .update-schedule{flex-wrap:wrap}
 }
+
+
+/* 2026 거래일 D-day + 예약 시각: 위젯을 숨기지 않고 제목 바로 옆에 노출 */
+.topbar{
+  height:auto;min-height:88px;padding:9px 0;gap:15px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-main{display:flex;flex-direction:column;justify-content:center;min-width:0;gap:7px;flex:1}
+.brand-line{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.brand{font-size:22px}
+.market-countdowns{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.market-day{
+  display:inline-flex;align-items:center;gap:5px;
+  white-space:nowrap;padding:5px 9px;border-radius:9px;
+  border:1px solid #dce6f5;background:#f2f7ff;
+  color:#365184;font-size:11px;font-weight:800;
+}
+.market-day strong{font-size:15px;font-weight:900;letter-spacing:-.4px;color:#164ea1}
+.market-day small{font-size:10px;color:#7887a0;font-weight:700}
+.market-kr{background:#eefaf4;border-color:#d4eddf;color:#176a43}
+.market-kr strong{color:#098358}
+.update-schedule{
+  display:flex !important;visibility:visible !important;
+  align-items:center;justify-content:flex-start;gap:7px;
+  min-width:0;order:initial !important;flex:0 1 auto !important;
+}
+.schedule-caption{font-size:11px;color:#687993;white-space:nowrap}
+.schedule-caption small{font-size:10px;color:#8391a9}
+.schedule-chip{padding:4px 8px;font-size:10px;gap:6px;background:#fff;
+  border-radius:7px;border-color:#e1e8f3}
+.schedule-chip strong{font-size:11px;color:#2c405f}
+.schedule-detail{font-size:9px;color:#9aa6b7;white-space:nowrap}
+.header-right{flex:0 0 auto}
+@media(min-width:921px) {
+  .dashboard{height:calc(100dvh - 145px);min-height:620px}
+}
+@media(max-width:1400px){
+  .schedule-detail{display:none}
+}
+@media(max-width:1250px){
+  .topbar{flex-wrap:wrap;padding:9px 0;gap:7px}
+  .header-main{flex:1 1 100%}
+  .header-right{margin-left:auto}
+  .dashboard{margin-top:10px}
+}
+@media (min-width:921px) and (max-width:1250px){
+  .dashboard{height:calc(100dvh - 185px)}
+}
+@media(max-width:600px){
+  .brand-line{gap:6px}
+  .brand{font-size:19px}
+  .market-day{padding:4px 6px;font-size:10px}
+  .market-day strong{font-size:12px}
+  .schedule-caption{flex-basis:100%}
+  .update-schedule{flex-wrap:wrap;gap:5px}
+  .header-right{margin-left:0}
+}

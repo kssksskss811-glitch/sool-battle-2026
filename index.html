@@ -7,17 +7,30 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css?v=schedule-20261013">
+  <link rel="stylesheet" href="./assets/style.css?v=market-dday-20261013-v2">
   <script defer src="./assets/app.js?v=schedule-20261013"></script>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand"><span aria-hidden="true">🍻</span> 술값배틀 <em>2026</em></div>
-    <div class="update-schedule" aria-label="한국시간 기준 매일 자동 종가 갱신 예약 시각">
-      <span class="schedule-caption">⏱ 자동 종가 갱신 <small>매일 · KST</small></span>
-      <span class="schedule-chip"><span>미국 주식 · 비트코인</span><strong>09:30</strong></span>
-      <span class="schedule-chip"><span>국내 주식</span><strong>17:30</strong></span>
+    <div class="header-main">
+      <div class="brand-line">
+        <div class="brand"><span aria-hidden="true">🍻</span> 술값배틀 <em>2026</em></div>
+        <div class="market-countdowns" aria-label="2026년 결산까지 남은 실제 주식시장 거래일 수">
+          <span class="market-day market-us" title="미국 증시: NYSE 정규장 최종 2026년 12월 31일 · 주말과 휴장일 제외">
+            🇺🇸 미장 <strong id="usTradingDays">D-계산 중</strong><small>거래일</small>
+          </span>
+          <span class="market-day market-kr" title="한국 증시: 2026년 마지막 개장일 12월 30일 · 주말과 휴장일 제외">
+            🇰🇷 국장 <strong id="krTradingDays">D-계산 중</strong><small>거래일</small>
+          </span>
+        </div>
+      </div>
+      <div class="update-schedule" aria-label="한국시간 기준 종가 수집 예약 시각">
+        <span class="schedule-caption">⏱ 자동 종가 수집 <small>매일 · 한국시간</small></span>
+        <span class="schedule-chip"><span>미국 주식 + 비트코인</span><strong>오전 09:30</strong></span>
+        <span class="schedule-chip"><span>국내 주식</span><strong>오후 05:30</strong></span>
+        <span class="schedule-detail">※ 예정 시각 · 서버 상황에 따라 반영 지연 가능</span>
+      </div>
     </div>
     <div class="header-right">
       <span id="asOf">최신 데이터 확인 중</span>
@@ -83,5 +96,80 @@
   <footer class="page-foot">※ 주식은 확정 종가 기준, 비트코인은 업비트 원화 일봉(09시 마감). 과거 순위는 매일 한국시간 17:30에 확인 가능했던 가격으로 복원합니다. 시세 제공처 사정으로 기록이 일부 누락될 수 있습니다.</footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* 2026년 미장/국장 남은 실제 정규장 거래일 수: 거래소 현지 날짜·시각 기준.
+   오늘 정규장 종료 전이면 오늘 세션을 포함, 종료 후에는 제외.
+   주말/정규 휴장일을 제외하되 조기 폐장일은 거래일로 셉니다.
+   2026년 이후 임시 휴장이 발표되면 아래 달력 보정이 필요합니다. */
+(() => {
+  "use strict";
+  const NYSE_HOLIDAYS = new Set([
+    "2026-01-01","2026-01-19","2026-02-16","2026-04-03",
+    "2026-05-25","2026-06-19","2026-07-03","2026-09-07",
+    "2026-11-26","2026-12-25"
+  ]);
+  const KRX_HOLIDAYS = new Set([
+    "2026-01-01","2026-02-16","2026-02-17","2026-02-18",
+    "2026-03-02","2026-05-01","2026-05-05","2026-05-25",
+    "2026-06-03","2026-07-17","2026-08-17",
+    "2026-09-24","2026-09-25","2026-10-05","2026-10-09",
+    "2026-12-25","2026-12-31"
+  ]);
+  const EARLY_CLOSE_NYSE = new Set(["2026-11-27","2026-12-24"]);
+
+  function localClock(now, timeZone) {
+    const pieces = new Intl.DateTimeFormat("en-US", {
+      timeZone, year:"numeric", month:"2-digit", day:"2-digit",
+      hour:"2-digit", minute:"2-digit", hourCycle:"h23"
+    }).formatToParts(now);
+    const fields = {};
+    for (const p of pieces) if (p.type !== "literal") fields[p.type] = p.value;
+    return {day:`${fields.year}-${fields.month}-${fields.day}`,
+      minutes:Number(fields.hour)*60+Number(fields.minute)};
+  }
+
+  function countRemainingSessions(now, market) {
+    const us = market === "us";
+    const zone = us ? "America/New_York" : "Asia/Seoul";
+    const today = localClock(now, zone);
+    const endDay = us ? "2026-12-31" : "2026-12-30";
+    const holidays = us ? NYSE_HOLIDAYS : KRX_HOLIDAYS;
+    if (today.day > endDay) return 0;
+    // UTC의 정오를 이용해 날짜만 세므로 브라우저 지역·서머타임에 영향을 받지 않습니다.
+    let d = new Date(today.day+"T12:00:00Z");
+    const end = new Date(endDay+"T12:00:00Z");
+    let count = 0;
+    while (d <= end) {
+      const iso = d.toISOString().slice(0, 10);
+      const weekday = d.getUTCDay();
+      const open = weekday !== 0 && weekday !== 6 && !holidays.has(iso);
+      if (open) {
+        const closeMinutes = us ? (EARLY_CLOSE_NYSE.has(iso) ? 13*60 : 16*60) : 15*60+30;
+        if (iso !== today.day || today.minutes < closeMinutes) count++;
+      }
+      d.setUTCDate(d.getUTCDate()+1);
+    }
+    return count;
+  }
+
+  function refreshMarketCountdown() {
+    const now = new Date();
+    for (const [id, market] of [["usTradingDays","us"],["krTradingDays","kr"]]) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const remaining = countRemainingSessions(now,market);
+      el.textContent = remaining ? `D-${remaining}` : "D-DAY 종료";
+      el.setAttribute("aria-label", `${market === "us" ? "미국" : "한국"} 주식시장 남은 거래일 ${remaining}일`);
+    }
+  }
+  refreshMarketCountdown();
+  setInterval(refreshMarketCountdown, 60000);
+  window.addEventListener("pageshow", refreshMarketCountdown);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) refreshMarketCountdown();
+  });
+})();
+</script>
 </body>
 </html>
