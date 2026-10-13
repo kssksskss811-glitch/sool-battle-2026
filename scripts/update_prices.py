@@ -132,7 +132,17 @@ def fetch_korean_stock(symbol: str, now: datetime) -> dict:
         })
         request = Request(url, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/"})
         with urlopen(request, timeout=15) as response:
-            root = ElementTree.fromstring(response.read(1000000))
+            xml_bytes = response.read(1000000)
+        # 네이버 차트 XML은 EUC-KR/CP949 선언을 사용할 수 있어
+        # 먼저 유니코드로 변환하고 XML 인코딩 선언을 제거합니다.
+        try:
+            xml_text = xml_bytes.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            xml_text = xml_bytes.decode("cp949")
+        xml_text = xml_text.lstrip()
+        if xml_text.startswith("<?xml"):
+            xml_text = xml_text.split("?>", 1)[1]
+        root = ElementTree.fromstring(xml_text)
         candles = []
         for item in root.iter("item"):
             parts = (item.get("data") or "").split("|")
@@ -152,6 +162,7 @@ def fetch_korean_stock(symbol: str, now: datetime) -> dict:
     except Exception as exc:
         errors.append("Naver: " + str(exc))
         print(f"[NAVER ERROR] {symbol}: {type(exc).__name__}: {exc}", file=sys.stderr)
+
     try:
         sources.append(fetch_stock(symbol, now))
     except Exception as exc:
