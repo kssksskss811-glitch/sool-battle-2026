@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101319">
+  <meta name="description" content="2026 연말 술값배틀 · 9명의 수익률을 겨루는 모임 대시보드. 꼴찌 세 명이 쏜다!">
+  <title>술값배틀 2026 | 꼴찌 3명이 쏜다</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar" aria-label="사이트 메뉴">
+      <a class="brand" href="#top" aria-label="술값배틀 홈">
+        <span class="brand-icon" aria-hidden="true">🍻</span>
+        <span class="brand-copy"><strong>술값배틀<span class="brand-dot">.</span></strong><small>2026 YEAR-END BATTLE</small></span>
+      </a>
+      <div class="side-divider"></div>
+      <p class="sidebar-caption">THE ARENA</p>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="#top" class="nav-link active"><span aria-hidden="true">◈</span> 종합 상황판 <i>LIVE</i></a>
+        <a href="#leaderboard" class="nav-link"><span aria-hidden="true">▥</span> 실시간 순위</a>
+        <a href="#losers" class="nav-link"><span aria-hidden="true">♧</span> 술값 위기 3인</a>
+        <a href="#history" class="nav-link"><span aria-hidden="true">⌁</span> 순위 변화</a>
+        <a href="#rules" class="nav-link"><span aria-hidden="true">◎</span> 내기 규칙</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-countdown">
+          <span class="count-label"><span class="small-circle"></span> 결전의 날까지</span>
+          <strong id="sideDays">D-79</strong>
+          <p>2026.12.31 · FINAL CLOSE</p>
+          <div class="countline"><span id="dayProgress"></span></div>
+        </div>
+        <div class="sidebar-foot">친목은 영원하고<br><b>술값은 누군가 낸다.</b></div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar" id="top">
+        <div class="breadcrumb"><span class="crumb-dot"></span> PRIVATE LEAGUE <span class="crumb-slash">/</span> SEASON 2026</div>
+        <div class="top-actions">
+          <div class="live-chip" id="dataStatus"><span class="pulse"></span> 데이터 준비 중</div>
+          <button class="icon-button" id="shareButton" type="button" aria-label="현재 순위 공유하기" title="순위 공유">↗</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="hero" aria-labelledby="heroTitle">
+          <div class="hero-lights" aria-hidden="true"><span></span><span></span></div>
+          <div class="hero-content">
+            <div class="hero-kicker"><span>01 / 09</span> THE ULTIMATE FRIENDSHIP TEST</div>
+            <h1 id="heroTitle">수익은 내 마음대로,<br><span>술값은 남의 돈으로.</span></h1>
+            <p>9명의 야심 찬 픽. 단 3개의 계산서.<br>2026년 마지막 종가가 우리의 운명을 결정한다.</p>
+            <div class="hero-meta">
+              <span><span class="meta-icon">◷</span> 결전일 <b>2026.12.31</b></span>
+              <span><span class="meta-icon">♙</span> 참가자 <b>9명</b></span>
+              <span><span class="meta-icon">⌗</span> 종목 <b>8개</b></span>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="badge-circle">BOTTOM<br><strong>3</strong><br>PAY!</div>
+            <div class="hero-ticket">
+              <div class="ticket-heading">OFFICIAL DRINK BILL</div>
+              <span class="ticket-rule"></span>
+              <div class="ticket-price">3명 당첨</div>
+              <div class="ticket-sub">NO REFUNDS. NO EXCUSES.</div>
+              <div class="ticket-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="hero-star">✦</div>
+          </div>
+        </section>
+
+        <div class="notice demo-notice" id="demoNotice" hidden>
+          <span class="notice-icon">!</span>
+          <div><strong>현재는 가상 데이터 시연 중입니다.</strong> 아래의 가격·수익률·순위는 실제 시세가 아닙니다. GitHub Pages 자동 업데이트를 설정하면 실거래 종가로 교체됩니다.</div>
+          <button id="demoShuffle" type="button">순위 흔들기 ↻</button>
+        </div>
+        <div class="notice warning-notice" id="warningNotice" hidden>
+          <span class="notice-icon">!</span><div id="warningText"></div>
+        </div>
+
+        <section class="stats" aria-label="배틀 현황 요약">
+          <div class="stat-card">
+            <div class="stat-label">현재 1위 <span class="stat-symbol">♕</span></div>
+            <div class="stat-big" id="statLeader">—</div>
+            <div class="stat-foot"><span class="value-positive" id="statLeaderRoi">—</span><span>오늘의 여유로운 자</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">가장 위험한 사람 <span class="stat-symbol">♨</span></div>
+            <div class="stat-big" id="statBottom">—</div>
+            <div class="stat-foot"><span class="value-negative" id="statBottomRoi">—</span><span>계산대 가장 가까움</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">1위와 9위의 격차 <span class="stat-symbol">↔</span></div>
+            <div class="stat-big" id="statGap">—</div>
+            <div class="stat-foot"><span class="stat-foot-muted">아직 끝난 게 아니다</span></div>
+          </div>
+          <div class="stat-card days-stat">
+            <div class="stat-label">최후의 종가까지 <span class="stat-symbol">⌛</span></div>
+            <div class="stat-big" id="statDays">D-79</div>
+            <div class="stat-foot"><span class="stat-foot-muted">12월 31일 · 결전의 날</span></div>
+          </div>
+        </section>
+
+        <div class="section-layout">
+          <section class="panel ranking-panel" id="leaderboard" aria-labelledby="rankTitle">
+            <div class="panel-header">
+              <div>
+                <div class="overline">LIVE LEADERBOARD</div>
+                <h2 id="rankTitle">9인 수익률 랭킹 <span class="heading-arrow">↗</span></h2>
+                <p>기준 단가 대비 누적 수익률 · 높을수록 안전</p>
+              </div>
+              <div class="rank-controls">
+                <select id="sortSelect" aria-label="정렬 기준">
+                  <option value="rank">수익률순</option>
+                  <option value="name">이름순</option>
+                  <option value="asset">종목순</option>
+                </select>
+              </div>
+            </div>
+            <div class="filter-row" role="group" aria-label="순위 필터">
+              <button type="button" class="filter-pill active" data-filter="all">전체 9명</button>
+              <button type="button" class="filter-pill" data-filter="risk">술값 위기 3명</button>
+              <button type="button" class="filter-pill" data-filter="plus">플러스 수익</button>
+            </div>
+            <div class="rankhead" aria-hidden="true"><span>순위 / 참가자</span><span>수익률 &amp; 퍼포먼스</span><span>현재 종가</span></div>
+            <div id="rankList" class="rank-list"><div class="loading">랭킹 계산 중…</div></div>
+            <div class="panel-footer" id="rankFooter">* 순위는 현재까지의 누적 수익률 기준입니다.</div>
+          </section>
+
+          <div class="right-stack">
+            <section class="panel danger-panel" id="losers" aria-labelledby="dangerTitle">
+              <div class="danger-top">
+                <div class="overline coral">THE DANGER ZONE</div>
+                <h2 id="dangerTitle">오늘의 술값 후보 <span>🍺</span></h2>
+                <p>지금 종료되면 이 세 사람이 계산합니다.</p>
+              </div>
+              <div class="danger-list" id="loserList"></div>
+              <div class="danger-note"><b>주의:</b> 12월 31일 마지막 종가 전까지는 누구도 안심 금지.</div>
+            </section>
+            <section class="panel mini-panel">
+              <div class="overline">MARKET SNAPSHOT</div>
+              <h2>종목별 기준 단가</h2>
+              <p>클릭하면 선택한 참가자의 상세 정보를 볼 수 있어요.</p>
+              <div id="tickerList" class="ticker-list"></div>
+            </section>
+          </div>
+        </div>
+
+        <section class="panel history-panel" id="history" aria-labelledby="historyTitle">
+          <div class="panel-header history-header">
+            <div>
+              <div class="overline">THE COMEBACK STORY</div>
+              <h2 id="historyTitle">뒤집기의 역사 <span class="heading-arrow">⌁</span></h2>
+              <p>매일 저장되는 수익률 기록. 술값은 마지막에 웃는 사람이 피한다.</p>
+            </div>
+            <select id="historyPerson" aria-label="그래프 참가자 선택"></select>
+          </div>
+          <div class="history-main">
+            <div class="chart-area">
+              <div id="chartBadges" class="chart-badges"></div>
+              <div id="chartContainer" class="chart-container">
+                <div class="empty-chart">업데이트가 쌓이면 여기에 수익률 흐름이 표시됩니다.</div>
+              </div>
+              <div class="chart-note" id="chartNote"></div>
+            </div>
+            <div class="day-brief">
+              <div class="day-brief-title">오늘의 한 줄 평</div>
+              <div id="battleComment" class="battle-comment">누가 계산하게 될까요?</div>
+              <div class="day-brief-line"></div>
+              <div class="day-brief-subtitle">최신 시세 기준일</div>
+              <div id="marketDates" class="market-dates"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="rules-panel" id="rules" aria-labelledby="rulesTitle">
+          <div class="rules-heading">
+            <span class="rule-icon">§</span>
+            <div><div class="overline">RULES OF THE GAME</div><h2 id="rulesTitle">아름다운 내기, 잔혹한 정산.</h2></div>
+          </div>
+          <div class="rules-grid">
+            <div><span>01</span><strong>수익률로 승부</strong><p>(마지막 종가 ÷ 시작 단가 − 1) × 100. 원금 규모는 상관없음.</p></div>
+            <div><span>02</span><strong>하위 3명 계산</strong><p>사람별 순위를 기준으로 꼴찌 세 명이 술값을 부담.</p></div>
+            <div><span>03</span><strong>연말에 최종 확정</strong><p>국내 12/30, 미국 12/31, BTC 12/31 일봉을 반영한 뒤 확정.</p></div>
+          </div>
+          <p class="rules-fineprint">※ 세금·배당·환율 변동은 반영하지 않음. 주식분할·상장폐지·경계 동률 등의 예외 규칙은 모임에서 미리 합의해야 합니다.</p>
+        </section>
+        <footer class="footer"><span>SOOL BATTLE <b>2026</b></span><span>친구는 잃지 말고, 술값만 잃자. © PRIVATE LEAGUE</span><button type="button" id="openRules">상세 규칙 ↗</button></footer>
+      </main>
+    </div>
+  </div>
+
+  <div id="detailModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" data-close-modal aria-label="닫기">×</button>
+      <div id="modalBody"></div>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>

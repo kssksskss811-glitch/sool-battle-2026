@@ -1,0 +1,408 @@
+{
+  "history": [
+    {
+      "day": "2026-10-01",
+      "returns": {
+        "eunji": 0.955858,
+        "dongmin": 0.955858,
+        "seongsu": -1.714447,
+        "ojing": 1.88271,
+        "bitna": 1.612468,
+        "yumin": -1.417652,
+        "jeonguk": -2.040522,
+        "gwangil": -3.018605,
+        "geumseung": 1.070525
+      },
+      "ranks": {
+        "ojing": 1,
+        "bitna": 2,
+        "geumseung": 3,
+        "eunji": 4,
+        "dongmin": 5,
+        "yumin": 6,
+        "seongsu": 7,
+        "jeonguk": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "seongsu",
+        "jeonguk",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-02",
+      "returns": {
+        "eunji": 1.641588,
+        "dongmin": 1.641588,
+        "seongsu": -1.916187,
+        "ojing": 1.955265,
+        "bitna": 1.334231,
+        "yumin": -2.327466,
+        "jeonguk": -2.839653,
+        "gwangil": -3.60216,
+        "geumseung": 1.68637
+      },
+      "ranks": {
+        "ojing": 1,
+        "geumseung": 2,
+        "eunji": 3,
+        "dongmin": 4,
+        "bitna": 5,
+        "seongsu": 6,
+        "yumin": 7,
+        "jeonguk": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "yumin",
+        "jeonguk",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-03",
+      "returns": {
+        "eunji": 1.992578,
+        "dongmin": 1.992578,
+        "seongsu": -2.520638,
+        "ojing": 1.731253,
+        "bitna": 0.993795,
+        "yumin": -3.03822,
+        "jeonguk": -3.264531,
+        "gwangil": -3.798077,
+        "geumseung": 2.535639
+      },
+      "ranks": {
+        "geumseung": 1,
+        "eunji": 2,
+        "dongmin": 3,
+        "ojing": 4,
+        "bitna": 5,
+        "seongsu": 6,
+        "yumin": 7,
+        "jeonguk": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "yumin",
+        "jeonguk",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-04",
+      "returns": {
+        "eunji": 1.980287,
+        "dongmin": 1.980287,
+        "seongsu": -3.369253,
+        "ojing": 1.487759,
+        "bitna": 0.866982,
+        "yumin": -3.394607,
+        "jeonguk": -3.34751,
+        "gwangil": -3.812387,
+        "geumseung": 3.327705
+      },
+      "ranks": {
+        "geumseung": 1,
+        "eunji": 2,
+        "dongmin": 3,
+        "ojing": 4,
+        "bitna": 5,
+        "jeonguk": 6,
+        "seongsu": 7,
+        "yumin": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "seongsu",
+        "yumin",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-05",
+      "returns": {
+        "eunji": 1.774568,
+        "dongmin": 1.774568,
+        "seongsu": -4.199971,
+        "ojing": 1.46575,
+        "bitna": 1.069481,
+        "yumin": -3.456236,
+        "jeonguk": -3.297725,
+        "gwangil": -3.913328,
+        "geumseung": 3.8512
+      },
+      "ranks": {
+        "geumseung": 1,
+        "eunji": 2,
+        "dongmin": 3,
+        "ojing": 4,
+        "bitna": 5,
+        "jeonguk": 6,
+        "yumin": 7,
+        "gwangil": 8,
+        "seongsu": 9
+      },
+      "losers": [
+        "yumin",
+        "gwangil",
+        "seongsu"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-06",
+      "returns": {
+        "eunji": 1.618437,
+        "dongmin": 1.618437,
+        "seongsu": -4.807909,
+        "ojing": 1.743391,
+        "bitna": 1.518946,
+        "yumin": -3.43036,
+        "jeonguk": -3.357731,
+        "gwangil": -4.273887,
+        "geumseung": 4.077498
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "eunji": 3,
+        "dongmin": 4,
+        "bitna": 5,
+        "jeonguk": 6,
+        "yumin": 7,
+        "gwangil": 8,
+        "seongsu": 9
+      },
+      "losers": [
+        "yumin",
+        "gwangil",
+        "seongsu"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-07",
+      "returns": {
+        "eunji": 1.680015,
+        "dongmin": 1.680015,
+        "seongsu": -5.149855,
+        "ojing": 2.220304,
+        "bitna": 2.014806,
+        "yumin": -3.531026,
+        "jeonguk": -3.662503,
+        "gwangil": -4.89161,
+        "geumseung": 4.14542
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "bitna": 3,
+        "eunji": 4,
+        "dongmin": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "gwangil": 8,
+        "seongsu": 9
+      },
+      "losers": [
+        "jeonguk",
+        "gwangil",
+        "seongsu"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-08",
+      "returns": {
+        "eunji": 1.970577,
+        "dongmin": 1.970577,
+        "seongsu": -5.339392,
+        "ojing": 2.707158,
+        "bitna": 2.373839,
+        "yumin": -3.856127,
+        "jeonguk": -4.182284,
+        "gwangil": -5.621954,
+        "geumseung": 4.251801
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "bitna": 3,
+        "eunji": 4,
+        "dongmin": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "seongsu": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "jeonguk",
+        "seongsu",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-09",
+      "returns": {
+        "eunji": 2.368239,
+        "dongmin": 2.368239,
+        "seongsu": -5.550339,
+        "ojing": 3.053347,
+        "bitna": 2.533771,
+        "yumin": -4.352684,
+        "jeonguk": -4.771744,
+        "gwangil": -6.290076,
+        "geumseung": 4.525404
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "bitna": 3,
+        "eunji": 4,
+        "dongmin": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "seongsu": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "jeonguk",
+        "seongsu",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-10",
+      "returns": {
+        "eunji": 2.71862,
+        "dongmin": 2.71862,
+        "seongsu": -5.899439,
+        "ojing": 3.230242,
+        "bitna": 2.566464,
+        "yumin": -4.879413,
+        "jeonguk": -5.281264,
+        "gwangil": -6.802707,
+        "geumseung": 4.96282
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "eunji": 3,
+        "dongmin": 4,
+        "bitna": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "seongsu": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "jeonguk",
+        "seongsu",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-11",
+      "returns": {
+        "eunji": 2.939539,
+        "dongmin": 2.939539,
+        "seongsu": -6.384131,
+        "ojing": 3.32404,
+        "bitna": 2.604481,
+        "yumin": -5.314697,
+        "jeonguk": -5.652756,
+        "gwangil": -7.190405,
+        "geumseung": 5.458059
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "eunji": 3,
+        "dongmin": 4,
+        "bitna": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "seongsu": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "jeonguk",
+        "seongsu",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-12",
+      "returns": {
+        "eunji": 3.061841,
+        "dongmin": 3.061841,
+        "seongsu": -6.908583,
+        "ojing": 3.454125,
+        "bitna": 2.739144,
+        "yumin": -5.634762,
+        "jeonguk": -5.940272,
+        "gwangil": -7.561677,
+        "geumseung": 5.895073
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "eunji": 3,
+        "dongmin": 4,
+        "bitna": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "seongsu": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "jeonguk",
+        "seongsu",
+        "gwangil"
+      ],
+      "demo": true
+    },
+    {
+      "day": "2026-10-13",
+      "returns": {
+        "eunji": 3.186195,
+        "dongmin": 3.186195,
+        "seongsu": -7.370787,
+        "ojing": 3.679741,
+        "bitna": 2.961317,
+        "yumin": -5.913174,
+        "jeonguk": -6.25,
+        "gwangil": -8.009423,
+        "geumseung": 6.234414
+      },
+      "ranks": {
+        "geumseung": 1,
+        "ojing": 2,
+        "eunji": 3,
+        "dongmin": 4,
+        "bitna": 5,
+        "yumin": 6,
+        "jeonguk": 7,
+        "seongsu": 8,
+        "gwangil": 9
+      },
+      "losers": [
+        "jeonguk",
+        "seongsu",
+        "gwangil"
+      ],
+      "demo": true
+    }
+  ],
+  "note": "시연용 가상 변동 이력. 실데이터 수집 시 초기화됨."
+}
