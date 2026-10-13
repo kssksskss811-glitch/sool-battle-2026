@@ -2,31 +2,31 @@
   "history": [
     {
       "day": "2026-10-13",
-      "updatedAt": "2026-10-13T09:52:02+09:00",
+      "updatedAt": "2026-10-13T10:56:32+09:00",
       "returns": {
         "eunji": 22.427787,
         "dongmin": 22.427787,
+        "geumseung": 8.977556,
         "bitna": 7.350032,
         "ojing": 4.94541,
-        "geumseung": 3.740648,
-        "jeonguk": -8.018868,
         "seongsu": -15.049438,
+        "jeonguk": -16.15566,
         "yumin": -17.018713,
-        "gwangil": -28.621908
+        "gwangil": -32.391048
       },
       "ranks": {
         "eunji": 1,
         "dongmin": 2,
-        "bitna": 3,
-        "ojing": 4,
-        "geumseung": 5,
-        "jeonguk": 6,
-        "seongsu": 7,
+        "geumseung": 3,
+        "bitna": 4,
+        "ojing": 5,
+        "seongsu": 6,
+        "jeonguk": 7,
         "yumin": 8,
         "gwangil": 9
       },
       "losers": [
-        "seongsu",
+        "jeonguk",
         "yumin",
         "gwangil"
       ],
