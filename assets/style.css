@@ -84,3 +84,35 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
  .danger-row{min-height:42px;padding:6px 10px}
  .chart{min-height:0}
 }
+
+/* 2026 주간 차트: 선명한 사람별 색상 + 주간 포인트 강조 */
+.person-name,.danger-person{color:var(--person);font-weight:900;text-shadow:0 0 0 currentColor}
+.person-avatar{background:var(--person);color:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--person) 13%,#fff)}
+.legend-area{display:flex;flex-direction:column;align-self:stretch;gap:7px;min-width:0}
+.legend{flex:1;justify-content:center;padding:7px 5px;gap:2px}
+.legend button{padding:7px 4px;font-size:11px;color:#243047;border:1px solid transparent;transition:opacity .12s ease,background .12s ease, border-color .12s ease}
+.legend button span{color:var(--person)}
+.legend button i{width:11px;height:11px;flex-basis:11px;box-shadow:0 0 0 1px #ffffff,0 0 0 2px color-mix(in srgb,var(--person) 15%,transparent)}
+.legend button.selected{background:#eaf2ff;border-color:#b6cafa}
+.legend button.dimmed{opacity:.32}
+.legend button:focus-visible{outline:2px solid #2867ec;outline-offset:1px}
+.legend-hint{font-size:9px;color:#7b8ca9;line-height:1.45;text-align:center;max-width:98px}
+.chart-main{grid-template-columns:minmax(0,1fr) 101px;gap:8px}
+.chart-tooltip{max-width:205px;min-width:153px;white-space:normal;font-size:10px}
+.chart-tooltip b{display:block;margin-bottom:5px}
+.chart-tooltip div{line-height:1.65}
+.chart svg{overflow:visible}
+@media(min-width:921px){
+  .right-stack{grid-template-rows:clamp(224px,30%,245px) minmax(0,1fr)}
+  .chart-main{min-height:0}
+}
+@media(max-width:600px){
+  .chart-main{grid-template-columns:minmax(0,1fr) 76px;gap:3px}
+  .legend button{font-size:9px;padding:5px 2px;gap:4px}
+  .legend i{width:9px;height:9px;flex-basis:9px}
+  .legend-hint{font-size:8px}
+}
+
+@media(min-width:921px){
+  .dashboard{height:calc(100dvh - 130px);min-height:620px}
+}

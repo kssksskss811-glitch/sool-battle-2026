@@ -7,8 +7,8 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css">
-  <script defer src="./assets/app.js"></script>
+  <link rel="stylesheet" href="./assets/style.css?v=weekly-20261013">
+  <script defer src="./assets/app.js?v=weekly-20261013"></script>
 </head>
 <body>
 <div class="app">
@@ -48,24 +48,27 @@
       </section>
       <section class="panel graph-panel" aria-labelledby="chartTitle">
         <div class="graph-heading">
-          <div><h2 id="chartTitle"><span aria-hidden="true">📈</span> 순위 대격돌</h2>
-            <p>실제 날짜별 수익률로 계산한 1~9위 순위 변동</p>
+          <div><h2 id="chartTitle"><span aria-hidden="true">📈</span> 주간 순위 대격돌</h2>
+            <p>매주 마지막 확보 기록으로 계산한 1~9위 순위 · 한 주에 한 점</p>
           </div>
           <select id="period" aria-label="차트 조회 기간">
-            <option value="7">최근 7일</option>
-            <option value="30">최근 30일</option>
-            <option value="all" selected>2026년 전체</option>
+            <option value="8">최근 8주</option>
+            <option value="12" selected>최근 12주</option>
+            <option value="all">2026년 전체 · 주간</option>
           </select>
         </div>
         <div class="chart-main">
           <div class="chart-wrap">
-            <div id="chart" class="chart" role="img" aria-label="날짜별 참가자 순위 변동 그래프"></div>
+            <div id="chart" class="chart" role="img" aria-label="주차별 참가자 순위 변동 그래프"></div>
             <div id="chartHover" class="chart-tooltip" hidden></div>
           </div>
-          <div class="legend" id="legend" aria-label="차트 참가자 범례"></div>
+          <div class="legend-area">
+            <div class="legend" id="legend" aria-label="참가자를 선택해 해당 순위선 강조"></div>
+            <div id="legendHint" class="legend-hint">이름을 누르면 해당 참가자 선 강조</div>
+          </div>
         </div>
         <div class="graph-foot">
-          <span><b>1위 ↑</b> · 위로 갈수록 순위 상승</span>
+          <span><b>1위 ↑</b> · 매주 순위 확정 시 변동 · 선 선택 가능</span>
           <span id="chartRange">과거 기록 불러오는 중</span>
         </div>
         <p id="chartNotice" class="chart-notice" hidden></p>

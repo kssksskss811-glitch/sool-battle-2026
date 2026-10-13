@@ -1,29 +1,29 @@
-/* 술값배틀 2026 - 밝은 한 화면 대시보드 + 실제 날짜별 순위 Bump Chart */
+/* 술값배틀 2026 - 주간 확정 순위 Bump Chart: 공동 순위 + 색상 강조 */
 "use strict";
 const PARTICIPANTS=[
-{id:"eunji",name:"은지",asset:"엔비디아",ticker:"NVDA",start:184.86,cur:"USD",color:"#008c48"},
-{id:"dongmin",name:"동민",asset:"엔비디아",ticker:"NVDA",start:184.86,cur:"USD",color:"#5c8f20"},
-{id:"geumseung",name:"금승",asset:"HMM",ticker:"011200.KS",start:20050,cur:"KRW",color:"#00a982"},
-{id:"bitna",name:"빛나",asset:"구글",ticker:"GOOGL",start:328.57,cur:"USD",color:"#057ce7"},
-{id:"ojing",name:"오징",asset:"아마존",ticker:"AMZN",start:247.3,cur:"USD",color:"#d98300"},
-{id:"seongsu",name:"성수",asset:"테슬라",ticker:"TSLA",start:445,cur:"USD",color:"#7432dd"},
-{id:"jeonguk",name:"정욱",asset:"두산에너빌리티",ticker:"034020.KS",start:84800,cur:"KRW",color:"#e52869"},
-{id:"yumin",name:"유민",asset:"비트코인",ticker:"KRW-BTC",start:133600000,cur:"KRW",color:"#f15d18"},
-{id:"gwangil",name:"광일",asset:"HD현대일렉트릭",ticker:"267260.KS",start:849000,cur:"KRW",color:"#205fdc"}
+{id:"eunji",name:"은지",asset:"엔비디아",ticker:"NVDA",start:184.86,cur:"USD",color:"#128541"},
+{id:"dongmin",name:"동민",asset:"엔비디아",ticker:"NVDA",start:184.86,cur:"USD",color:"#687B1B"},
+{id:"geumseung",name:"금승",asset:"HMM",ticker:"011200.KS",start:20050,cur:"KRW",color:"#008F92"},
+{id:"bitna",name:"빛나",asset:"구글",ticker:"GOOGL",start:328.57,cur:"USD",color:"#2768EF"},
+{id:"ojing",name:"오징",asset:"아마존",ticker:"AMZN",start:247.3,cur:"USD",color:"#A46C00"},
+{id:"seongsu",name:"성수",asset:"테슬라",ticker:"TSLA",start:445,cur:"USD",color:"#7839D4"},
+{id:"jeonguk",name:"정욱",asset:"두산에너빌리티",ticker:"034020.KS",start:84800,cur:"KRW",color:"#D52678"},
+{id:"yumin",name:"유민",asset:"비트코인",ticker:"KRW-BTC",start:133600000,cur:"KRW",color:"#EA4B0B"},
+{id:"gwangil",name:"광일",asset:"HD현대일렉트릭",ticker:"267260.KS",start:849000,cur:"KRW",color:"#334155"}
 ];
 const CHART_SERIES=[
-{id:"eunji",label:"은지·동민",color:"#008c48"},
-{id:"geumseung",label:"금승",color:"#00a982"},
-{id:"bitna",label:"빛나",color:"#057ce7"},
-{id:"ojing",label:"오징",color:"#d98300"},
-{id:"seongsu",label:"성수",color:"#7432dd"},
-{id:"jeonguk",label:"정욱",color:"#e52869"},
-{id:"yumin",label:"유민",color:"#f15d18"},
-{id:"gwangil",label:"광일",color:"#205fdc"}
+{id:"eunji",label:"은지·동민",color:"#128541"},
+{id:"geumseung",label:"금승",color:"#008F92"},
+{id:"bitna",label:"빛나",color:"#2768EF"},
+{id:"ojing",label:"오징",color:"#C28B00"},
+{id:"seongsu",label:"성수",color:"#7839D4"},
+{id:"jeonguk",label:"정욱",color:"#D52678"},
+{id:"yumin",label:"유민",color:"#EA4B0B"},
+{id:"gwangil",label:"광일",color:"#334155"}
 ];
 const $=id=>document.getElementById(id);
 const escapeHtml=str=>String(str).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-let priceData=null, history=[], chartRecords=[], ranked=[], hiddenGroups=new Set(), lastFetched=null;
+let priceData=null, history=[], chartRecords=[], ranked=[], focusedSeries=null, lastFetched=null;
 const fmtKRW=v=>"₩"+new Intl.NumberFormat("ko-KR",{maximumFractionDigits:0}).format(v);
 const fmtUSD=v=>"$"+new Intl.NumberFormat("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}).format(v);
 const fmtPrice=(value,currency)=>currency==="USD"?fmtUSD(value):fmtKRW(value);
@@ -119,93 +119,141 @@ function cleanHistory(values){
       CHART_SERIES.every(s=>Number.isInteger(r.ranks[s.id])&&r.ranks[s.id]>=1&&r.ranks[s.id]<=9);
   }).sort((a,b)=>a.day.localeCompare(b.day));
 }
+// 월~일을 한 주로 묶고, 한국시간 토요일 기록을 대표값으로 사용합니다.
+// 토요일 기록은 미국 금요일 종가 및 한국 금요일 종가가 모두 반영된 상태입니다.
+// 미완료 주는 마지막으로 확보된 일별 기록을 사용합니다.
+function saturdayOfWeek(iso){
+  const day=new Date(iso+"T12:00:00Z");
+  const weekday=day.getUTCDay(); // 0=일요일, 1=월요일 ... 6=토요일
+  day.setUTCDate(day.getUTCDate()+(weekday===0?-1:6-weekday));
+  return day.toISOString().slice(0,10);
+}
+function weeklyHistory(){
+  const daily=cleanHistory(history);
+  if(!daily.length)return [];
+  const grouped=new Map();
+  for(const row of daily){
+    const key=saturdayOfWeek(row.day);
+    const entry=grouped.get(key)||{sat:key,record:null,sundayOnly:null};
+    // 일요일은 토요일까지의 시세와 혼합하지 않습니다.
+    if(row.day<=key){
+      if(!entry.record||row.day>entry.record.day)entry.record=row;
+    }else if(!entry.sundayOnly||row.day>entry.sundayOnly.day){
+      entry.sundayOnly=row;
+    }
+    grouped.set(key,entry);
+  }
+  return [...grouped.values()]
+    .sort((a,b)=>a.sat.localeCompare(b.sat))
+    .map(e=>({...e.record||e.sundayOnly,weekEnd:e.sat,complete:(e.record?.day===e.sat)}))
+    .filter(e=>e.day);
+}
 function selectHistory(){
+  const all=weeklyHistory();
   const period=$("period").value;
-  const arr=cleanHistory(history);
-  if(!arr.length)return [];
-  const latest=arr[arr.length-1].day;
-  const date=new Date(latest+"T12:00:00Z");
-  if(period==="all")return arr;
-  date.setUTCDate(date.getUTCDate()-(Number(period)-1));
-  const cutoff=date.toISOString().slice(0,10);
-  return arr.filter(x=>x.day>=cutoff);
+  return period==="all"?all:all.slice(-Math.max(1,Number(period)||12));
 }
 function legendHtml(){
-  $("legend").innerHTML=CHART_SERIES.map(s=>`
-    <button class="${hiddenGroups.has(s.id)?"off":""}" type="button" data-series="${s.id}" title="${escapeHtml(s.label)} 선 보기/숨기기" style="--person:${s.color}">
-      <i></i><span>${escapeHtml(s.label)}</span>
-    </button>`).join("");
+  $("legend").innerHTML=CHART_SERIES.map(s=>{
+    const isFocus=focusedSeries===s.id;
+    const dim=focusedSeries!==null&&!isFocus;
+    return `<button class="${isFocus?"selected":dim?"dimmed":""}" type="button" data-series="${s.id}" aria-pressed="${isFocus}" title="${escapeHtml(s.label)} 순위선 강조 / 다시 누르면 전체 보기" style="--person:${s.color}">
+      <i></i><span>${escapeHtml(s.label)}</span></button>`;
+  }).join("");
+  const hint=$("legendHint");
+  if(hint)hint.textContent=focusedSeries?"선택한 참가자만 강조 · 다시 누르면 전체 표시":"이름을 누르면 해당 참가자 선 강조";
 }
 function buildChart(){
   chartRecords=selectHistory();
   legendHtml();
-  const element=$("chart");
-  const foot=$("chartRange"),notice=$("chartNotice");
+  const element=$("chart"),foot=$("chartRange"),notice=$("chartNotice");
+  const tip=$("chartHover"); if(tip)tip.hidden=true;
   notice.hidden=true;
   if(chartRecords.length<2){
-    element.innerHTML='<div class="chart-empty">과거 종가를 복원하고 있어요.<br>복원 작업이 완료되면 실제 날짜별 순위가 표시됩니다.<br>(가상 순위는 표시하지 않습니다.)</div>';
-    foot.textContent="기록 복원 대기";
-    if(history.length) {
-      notice.hidden=false;notice.textContent="GitHub Actions에서 과거 데이터 복원이 성공했는지 확인해주세요.";
+    element.innerHTML='<div class="chart-empty">주간 순위 기록이 아직 부족합니다.<br>실제 확정 종가 기록이 2주 이상 쌓이면 표시됩니다.</div>';
+    foot.textContent=chartRecords.length?"1주 기록 · 다음 주부터 선 표시":"과거 순위 기록 대기";
+    if(history.length && !cleanHistory(history).length){
+      notice.hidden=false;notice.textContent="유효한 실제 순위 기록이 없습니다. GitHub Actions 과거 복원 결과를 확인해주세요.";
     }
     return;
   }
-  foot.textContent=chartRecords[0].day.slice(5).replace("-","/")+" ~ "+
-    chartRecords[chartRecords.length-1].day.slice(5).replace("-","/")+
-    " · "+chartRecords.length+"일 기록";
-  if(!history.some(x=>x.source==="backfill-2026-v1")){
+  const asShort=iso=>iso.slice(5).replace("-","/");
+  foot.textContent=`${asShort(chartRecords[0].day)} ~ ${asShort(chartRecords.at(-1).day)} · ${chartRecords.length}주`;
+  const incomplete=chartRecords.filter((r,i)=>!r.complete && i<chartRecords.length-1);
+  if(incomplete.length){
     notice.hidden=false;
-    notice.textContent="아직 2026년 1월부터 과거 데이터 복원이 완료되지 않았습니다.";
+    notice.textContent=`※ ${incomplete.length}개 주에는 토요일 순위 기록이 없어 그 주 마지막 확보 기록을 사용했습니다.`;
+  }else if(!history.some(x=>x.source==="backfill-2026-v1")){
+    notice.hidden=false;
+    notice.textContent="과거 종가 복원 여부를 확인해주세요. 실제 기록만 표시합니다.";
   }
-  const W=610,H=390, left=34,right=12,top=16,bottom=34;
-  const plotW=W-left-right,plotH=H-top-bottom;
-  const x=i=>left+(chartRecords.length===1?0:i/(chartRecords.length-1)*plotW);
-  const y=r=>top+(r-1)/8*plotH;
-  let lines=[];
+  // 똑같은 종목+기준가를 고른 두 참가자는 반드시 같은 등수여야 합니다.
+  const tieMismatch=chartRecords.some(r=>r.ranks.eunji!==r.ranks.dongmin);
+  if(tieMismatch){
+    notice.hidden=false;
+    notice.textContent+=" ※ 공동 1위 참가자의 과거 순위가 불일치하는 날짜가 있어 기록 확인이 필요합니다.";
+  }
+
+  const W=700,H=390,L=39,R=15,T=17,B=37;
+  const plotW=W-L-R,plotH=H-T-B;
+  const x=i=>L+(chartRecords.length<=1?0:i/(chartRecords.length-1)*plotW);
+  const y=r=>T+(r-1)/8*plotH;
+  const out=[];
+  // 그리드(순위 1위는 위쪽)
+  out.push(`<rect x="${L}" y="${T}" width="${plotW}" height="${plotH}" fill="#fff"/>`);
   for(let rank=1;rank<=9;rank++){
     const yy=y(rank);
-    lines.push(`<line x1="${left}" x2="${W-right}" y1="${yy}" y2="${yy}" stroke="#e6edf6" stroke-width="1"/>`);
-    lines.push(`<text x="${left-10}" y="${yy+3.7}" fill="#8595b0" text-anchor="end" font-size="11" font-weight="700">${rank}</text>`);
+    out.push(`<line x1="${L}" x2="${W-R}" y1="${yy.toFixed(2)}" y2="${yy.toFixed(2)}" stroke="${rank===1?"#d7ece0":"#e7ecf3"}" stroke-width="1"/>`);
+    out.push(`<text x="${L-11}" y="${(yy+4).toFixed(2)}" fill="${rank===1?"#16834c":"#6b788e"}" text-anchor="end" font-size="12" font-weight="800">${rank}</text>`);
   }
+  // 날짜 라벨은 범위에 따라 6~7개, 순위 데이터 자체는 매주 모두 사용합니다.
+  const ticks=new Set([0,chartRecords.length-1]);
   const tickCount=Math.min(7,chartRecords.length);
-  const xticks=new Set([0,chartRecords.length-1]);
-  for(let t=0;t<tickCount;t++)xticks.add(Math.round(t*(chartRecords.length-1)/(tickCount-1)));
-  [...xticks].sort((a,b)=>a-b).forEach(i=>{
-    const xx=x(i);
-    lines.push(`<line x1="${xx}" x2="${xx}" y1="${top}" y2="${H-bottom}" stroke="#eef2f8"/>`);
-    lines.push(`<text x="${xx}" y="${H-11}" text-anchor="middle" fill="#8a9bb4" font-size="10" font-weight="650">${chartRecords[i].day.slice(5).replace("-","/")}</text>`);
-  });
-  let plot=[];
-  for(const s of CHART_SERIES) {
-    if(hiddenGroups.has(s.id))continue;
-    const coords=chartRecords.map((row,i)=>[x(i),y(row.ranks[s.id])]);
-    const d=coords.map((point,i)=>(i?"L":"M")+point[0].toFixed(2)+" "+point[1].toFixed(2)).join(" ");
-    plot.push(`<path d="${d}" stroke="${s.color}" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".93"/>`);
-    // 전체 기간은 밀도가 높아 매일 점을 그리면 화면이 답답해져 마지막 점만 표시
-    const picked=coords.length<=35?coords: [coords[coords.length-1]];
-    picked.forEach(([cx,cy],index)=>{
-      plot.push(`<circle cx="${cx}" cy="${cy}" r="${coords.length>35?4:2.8}" fill="#fff" stroke="${s.color}" stroke-width="2"/>`);
+  for(let i=0;i<tickCount;i++)ticks.add(Math.round(i*(chartRecords.length-1)/Math.max(1,tickCount-1)));
+  for(const idx of [...ticks].sort((a,b)=>a-b)){
+    const xx=x(idx);
+    out.push(`<line x1="${xx}" x2="${xx}" y1="${T}" y2="${H-B}" stroke="#f1f4f9"/>`);
+    out.push(`<text x="${xx}" y="${H-12}" text-anchor="middle" fill="#66758f" font-size="11" font-weight="750">${asShort(chartRecords[idx].day)}</text>`);
+  }
+
+  // 범례를 선택하면 다른 선은 흐려지고, 선택한 선이 가장 앞으로 나옵니다.
+  const sorted=CHART_SERIES.slice().sort((a,b)=>Number(a.id===focusedSeries)-Number(b.id===focusedSeries));
+  for(const s of sorted){
+    const focused=focusedSeries===s.id, faded=focusedSeries&& !focused;
+    const coords=chartRecords.map((r,i)=>[x(i),y(r.ranks[s.id])]);
+    // 계단형: 다음 주 순위가 확정되기 전까지 직전 등수를 유지.
+    let path=`M ${coords[0][0].toFixed(2)} ${coords[0][1].toFixed(2)}`;
+    for(let i=1;i<coords.length;i++){
+      const [xx,yy]=coords[i];
+      path+=` H ${xx.toFixed(2)} V ${yy.toFixed(2)}`;
+    }
+    const opacity=faded?".09":"1";
+    const strokeWidth=focused?4.1:2.6;
+    // 가시성 높은 화이트 테두리로 겹친 순위선을 분리합니다.
+    if(!faded)out.push(`<path d="${path}" fill="none" stroke="#ffffff" stroke-width="${strokeWidth+2.7}" stroke-linejoin="round" opacity=".96"/>`);
+    out.push(`<path d="${path}" fill="none" stroke="${s.color}" stroke-width="${strokeWidth}" stroke-linejoin="round" opacity="${opacity}"/>`);
+    coords.forEach(([xx,yy],i)=>{
+      if(chartRecords.length>17 && i!==coords.length-1 && i%Math.ceil(chartRecords.length/16)!==0)return;
+      const r=focused?4.1:chartRecords.length>17?2.5:3;
+      out.push(`<circle cx="${xx.toFixed(2)}" cy="${yy.toFixed(2)}" r="${r}" stroke="${s.color}" stroke-width="${focused?2.4:1.8}" fill="#fff" opacity="${opacity}"/>`);
     });
   }
-  element.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-label="2026 순위변동 차트">
-  ${lines.join("")}${plot.join("")}
-  <rect x="${left}" y="${top}" width="${plotW}" height="${plotH}" fill="transparent" id="graphHit"/>
-  </svg>`;
-  const hit=$("graphHit"),tooltip=$("chartHover");
-  hit.addEventListener("pointermove",event=>{
-    const bounds=hit.getBoundingClientRect();
-    const ratio=Math.min(1,Math.max(0,(event.clientX-bounds.left)/bounds.width));
+  out.push(`<rect id="graphHit" x="${L}" y="${T}" width="${plotW}" height="${plotH}" fill="transparent" style="cursor:crosshair"/>`);
+  element.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-label="주차별 참가자 순위 계단형 변동 그래프">${out.join("")}</svg>`;
+  const hit=$("graphHit");
+  hit.addEventListener("pointermove",ev=>{
+    const rect=hit.getBoundingClientRect();
+    const ratio=Math.min(1,Math.max(0,(ev.clientX-rect.left)/Math.max(1,rect.width)));
     const idx=Math.round(ratio*(chartRecords.length-1));
-    const day=chartRecords[idx];
-    const s=CHART_SERIES.filter(s=>!hiddenGroups.has(s.id)).map(s=>`${s.label}: ${day.ranks[s.id]}위`);
-    tooltip.textContent=day.day+"\n"+s.join("   ");
-    tooltip.hidden=false;
-    const wrap=$("chart").getBoundingClientRect();
-    const xpos=event.clientX-wrap.left;
-    tooltip.style.left=Math.max(0,Math.min(wrap.width-205,xpos+12))+"px";
-    tooltip.style.top=Math.max(0,event.clientY-wrap.top-140)+"px";
+    const rec=chartRecords[idx];
+    const active=CHART_SERIES.filter(s=>!focusedSeries||s.id===focusedSeries);
+    tip.innerHTML=`<b>${asShort(rec.day)} 기준${rec.complete?"":" · 주중/대체 기록"}</b><div>${active.map(s=>`<span style="color:${s.color}">●</span> ${escapeHtml(s.label)} ${rec.ranks[s.id]}위`).join("<br>")}</div>`;
+    tip.hidden=false;
+    const wrap=element.getBoundingClientRect();
+    tip.style.left=Math.min(Math.max(5,ev.clientX-wrap.left+10),Math.max(5,wrap.width-195))+"px";
+    tip.style.top=Math.min(Math.max(5,ev.clientY-wrap.top-90),Math.max(5,wrap.height-115))+"px";
   });
-  hit.addEventListener("pointerleave",()=>tooltip.hidden=true);
+  hit.addEventListener("pointerleave",()=>tip.hidden=true);
 }
 function renderAll(){
   if(!priceData)return;
@@ -245,8 +293,7 @@ function init(){
   $("legend").addEventListener("click",e=>{
     const button=e.target.closest("[data-series]");
     if(!button)return;
-    const id=button.dataset.series;
-    if(hiddenGroups.has(id))hiddenGroups.delete(id);else hiddenGroups.add(id);
+    focusedSeries=focusedSeries===button.dataset.series?null:button.dataset.series;
     buildChart();
   });
   $("share").addEventListener("click",share);
