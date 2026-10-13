@@ -129,6 +129,29 @@ class FileInputTests(unittest.TestCase):
         p["markets"]["034020.KS"]["date"] = "2026-10-13"
         self.assert_invalid(p)
 
+    def test_verified_hankyung_and_marketbeat_hosts_are_allowed_exactly(self):
+        payload = self.make_payload()
+        for symbol in ("034020.KS", "267260.KS", "011200.KS"):
+            payload["markets"][symbol]["source"] = {
+                "name": "한국경제", "url": "https://markets.hankyung.com/stock/" + symbol[:6],
+            }
+        payload["markets"]["GOOGL"]["source"] = {
+            "name": "MarketBeat", "url": "https://www.marketbeat.com/stocks/NASDAQ/GOOGL/chart/",
+        }
+        self.assertFalse(self.run_file(payload))
+        for symbol, invalid_url in (
+            ("034020.KS", "https://markets.hankyung.com.evil.test/stock/034020"),
+            ("034020.KS", "https://www.hankyung.com/stock/034020"),
+            ("034020.KS", "https://markets.hankyung.com/stock/267260"),
+            ("GOOGL", "https://www.marketbeat.com.evil.test/stocks/NASDAQ/GOOGL/chart/"),
+            ("GOOGL", "https://marketbeat.com/stocks/NASDAQ/GOOGL/chart/"),
+            ("GOOGL", "https://www.marketbeat.com/stocks/NASDAQ/TSLA/chart/"),
+        ):
+            invalid = copy.deepcopy(payload)
+            invalid["markets"][symbol]["source"]["url"] = invalid_url
+            with self.subTest(symbol=symbol, url=invalid_url):
+                self.assert_invalid(invalid)
+
     def test_verification_timestamp_must_be_aware_recent_and_same_snapshot_day(self):
         for value in ("2026-10-13T17:29:00", "2026-10-13T17:31:00+09:00", "2026-10-12T17:29:00+09:00", None):
             p = self.make_payload()

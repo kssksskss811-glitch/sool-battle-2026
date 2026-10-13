@@ -33,8 +33,8 @@
 
 | 종목 | 허용 출처 호스트 |
 |---|---|
-| 미국 | `finance.yahoo.com`, `nasdaq.com`, `www.nasdaq.com`, `stockanalysis.com` |
-| 한국 | `finance.naver.com`, `m.stock.naver.com`, `finance.daum.net`, `data.krx.co.kr`, `www.krx.co.kr` |
+| 미국 | `finance.yahoo.com`, `nasdaq.com`, `www.nasdaq.com`, `stockanalysis.com`, `www.marketbeat.com` |
+| 한국 | `finance.naver.com`, `m.stock.naver.com`, `finance.daum.net`, `data.krx.co.kr`, `www.krx.co.kr`, `markets.hankyung.com` |
 | BTC | `api.upbit.com`의 `/v1/candles/days`, 쿼리 `market=KRW-BTC` 정확히 1개 |
 
 미국 출처 URL 예: `https://finance.yahoo.com/quote/NVDA/history/`.

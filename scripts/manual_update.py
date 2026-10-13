@@ -27,8 +27,8 @@ PEOPLE=[
 ]
 KST=timezone(timedelta(hours=9))
 INPUT_PATH="inputs/closing-prices.json"
-USD_HOSTS={"finance.yahoo.com","nasdaq.com","www.nasdaq.com","stockanalysis.com"}
-KR_HOSTS={"finance.naver.com","m.stock.naver.com","finance.daum.net","data.krx.co.kr","www.krx.co.kr"}
+USD_HOSTS={"finance.yahoo.com","nasdaq.com","www.nasdaq.com","stockanalysis.com","www.marketbeat.com"}
+KR_HOSTS={"finance.naver.com","m.stock.naver.com","finance.daum.net","data.krx.co.kr","www.krx.co.kr","markets.hankyung.com"}
 
 def read(path,default):
  try: return json.loads(path.read_text("utf-8"))
