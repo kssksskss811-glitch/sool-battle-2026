@@ -1,0 +1,88 @@
+name: 술값배틀 · 수동 종가 입력 및 사이트 배포
+
+on:
+  workflow_dispatch:
+    inputs:
+      trade_date:
+        description: "가격 기준일 (YYYY-MM-DD, 2026년)"
+        required: true
+        type: string
+      nvda:
+        description: "엔비디아 NVDA (달러)"
+        required: true
+        type: string
+      tsla:
+        description: "테슬라 TSLA (달러)"
+        required: true
+        type: string
+      amzn:
+        description: "아마존 AMZN (달러)"
+        required: true
+        type: string
+      googl:
+        description: "구글 GOOGL (달러)"
+        required: true
+        type: string
+      krw_btc:
+        description: "비트코인 KRW-BTC (원)"
+        required: true
+        type: string
+      kr_034020:
+        description: "두산에너빌리티 034020 (원)"
+        required: true
+        type: string
+      kr_267260:
+        description: "HD현대일렉트릭 267260 (원)"
+        required: true
+        type: string
+      kr_011200:
+        description: "HMM 011200 (원)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sool-manual-pages
+  cancel-in-progress: false
+
+jobs:
+  manual-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Python 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 직접 입력한 가격 저장 (외부 API 호출 없음)
+        env:
+          INPUT_TRADE_DATE: ${{ inputs.trade_date }}
+          INPUT_NVDA: ${{ inputs.nvda }}
+          INPUT_TSLA: ${{ inputs.tsla }}
+          INPUT_AMZN: ${{ inputs.amzn }}
+          INPUT_GOOGL: ${{ inputs.googl }}
+          INPUT_KRW_BTC: ${{ inputs.krw_btc }}
+          INPUT_KR_034020: ${{ inputs.kr_034020 }}
+          INPUT_KR_267260: ${{ inputs.kr_267260 }}
+          INPUT_KR_011200: ${{ inputs.kr_011200 }}
+        run: python scripts/manual_update.py
+      - name: JSON 저장
+        run: |
+          git config user.name "sool-battle-manual"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/prices.json data/history.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: manually set closing prices"
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - uses: actions/deploy-pages@v4
