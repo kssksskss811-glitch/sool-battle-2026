@@ -59,6 +59,35 @@ function dataUpdateLabel(iso){
   for(const part of new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(date))parts[part.type]=part.value;
   return `데이터 갱신 ${parts.year}.${parts.month}.${parts.day} ${parts.hour}:${parts.minute} KST`;
 }
+function quoteTimeLabel(iso){
+  if(typeof iso!=="string"||!/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(iso)||Number.isNaN(+new Date(iso)))return "실제 시각 미확인";
+  const parts={};
+  for(const part of new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(new Date(iso)))parts[part.type]=part.value;
+  return `${parts.year}.${parts.month}.${parts.day} ${parts.hour}:${parts.minute}:${parts.second} KST`;
+}
+function quoteBasisLabel(quote,symbol){
+  if(!quote)return "가격 기준 미확인";
+  const source=quote.source?" · 출처 "+quote.source:" · 출처 미확인";
+  if(!quote.asOf){
+    const basis=symbol==="KRW-BTC"?"완료 일봉 · 일봉 마감 "+bitcoinCloseLabel(quote.date):"확정 종가 · "+(sourceDayDate(quote.date)?quote.date.replaceAll("-","."):"기준일 미확인")+" · 실제 시각 미기록";
+    return basis+(quote.stale?" · 이전 값 / 확인 필요":"")+source;
+  }
+  const sessions={day:"데이장",pre:"프리장",regular:"정규장",after:"시간외",continuous:"연속거래",daily:"일봉"};
+  const types={last_trade:(sessions[quote.session]||"세션 미확인")+" 거래가격",previous_close:"직전 정규장 종가",spot:"BTC 현물",daily_close:"완료 일봉"};
+  const delay=quote.delay?.status==="realtime"?"실시간 (출처 표시)":quote.delay?.status==="delayed"?`지연 ${quote.delay.minutes}분 (출처 표시)`:"지연 여부 미확인";
+  return (types[quote.priceType]||"가격 유형 미확인")+" · "+quoteTimeLabel(quote.asOf)+" · "+delay+source;
+}
+function marketQuoteLabel(markets,symbols){
+  const labels=symbols.map(symbol=>quoteBasisLabel(markets?.[symbol],symbol));
+  return labels.every(label=>label===labels[0])?labels[0]:symbols.map((symbol,i)=>symbol.replace(".KS","")+" "+labels[i]).join(" / ");
+}
+function quoteRowLabel(quote,symbol){
+  const full=quoteBasisLabel(quote,symbol);
+  if(!quote?.asOf)return full.split(" · 출처")[0];
+  const parts=full.split(" · ");
+  const shortTime=parts[1].replace(/^\d{4}\./,"");
+  return parts[0]+" · "+shortTime+(quote.delay?.status==="realtime"?"":" · "+parts[2]);
+}
 function computeRanking(data) {
   return PARTICIPANTS.map((p,i)=>{
     const quote=data.markets?.[p.ticker];
@@ -90,13 +119,13 @@ function renderRankRows() {
         <div class="asset" title="${escapeHtml(p.asset+" · "+p.ticker)}">${escapeHtml(p.asset)} · ${escapeHtml(p.ticker)}</div>
       </div></div>
       <div class="performance"><div class="track"><i style="width:${fill.toFixed(1)}%"></i></div><div class="return">${p.roi===null?"—":fmtPct(p.roi)}</div></div>
-      <div class="price">${p.price===null?"미수집":fmtPrice(p.price,p.cur)}<small>기준 ${fmtPrice(p.start,p.cur)}</small></div>
+      <div class="price">${p.price===null?"미수집":fmtPrice(p.price,p.cur)}<small>기준 ${fmtPrice(p.start,p.cur)}</small><small class="quote-basis" title="${escapeHtml(quoteBasisLabel(priceData?.markets?.[p.ticker],p.ticker))}">${escapeHtml(quoteRowLabel(priceData?.markets?.[p.ticker],p.ticker))}</small></div>
     </button>`;
   }).join("");
 }
 function renderRisk() {
   if(ranked.some(p=>p.price===null)){
-    $("dangerRows").innerHTML='<div class="loading">종목 종가가 모두 확보되면 표시됩니다.</div>';return;
+    $("dangerRows").innerHTML='<div class="loading">종목 가격이 모두 확보되면 표시됩니다.</div>';return;
   }
   const losers=ranked.slice(-3).reverse();
   $("dangerRows").innerHTML=losers.map(p=>
@@ -108,18 +137,20 @@ function renderRisk() {
 }
 function renderHeader(){
   $("asOf").textContent=dataUpdateLabel(priceData?.updatedAt);
-  $("krCloseDay").textContent=marketDateLabel(priceData?.markets,["034020.KS","267260.KS","011200.KS"]);
-  $("usCloseDay").textContent=marketDateLabel(priceData?.markets,["NVDA","TSLA","AMZN","GOOGL"]);
-  $("btcCandleClose").textContent=bitcoinCloseLabel(priceData?.markets?.["KRW-BTC"]?.date);
+  $("krCloseDay").textContent=marketQuoteLabel(priceData?.markets,["034020.KS","267260.KS","011200.KS"]);
+  $("usCloseDay").textContent=marketQuoteLabel(priceData?.markets,["NVDA","TSLA","AMZN","GOOGL"]);
+  $("btcCandleClose").textContent=quoteBasisLabel(priceData?.markets?.["KRW-BTC"],"KRW-BTC");
+  $("verifiedAt").textContent=priceData?.manualInput?.verifiedAt?"입력 확인 "+quoteTimeLabel(priceData.manualInput.verifiedAt):"입력 확인 시각 미기록";
   const label=$("dataStatus");
-  const stale=ranked.some(p=>p.stale||p.price===null||!sourceDayDate(p.sourceDay)) || !["live","manual"].includes(priceData?.mode);
+  const stale=ranked.some(p=>p.stale||p.price===null||!sourceDayDate(p.sourceDay)) || Object.values(priceData?.markets||{}).some(q=>q.asOf&&(!["realtime"].includes(q.delay?.status)||quoteTimeLabel(q.asOf)==="실제 시각 미확인")) || !["live","manual"].includes(priceData?.mode);
   label.classList.toggle("partial",stale);
-  label.innerHTML=stale?"<i></i> 일부 종가 확인 필요":"<i></i> 확인된 종가 기준";
+  label.innerHTML=stale?"<i></i> 지연 / 확인 필요":"<i></i> 확인된 가격 기준";
   const cut=ranked.length>=4 && Math.abs((ranked[5]?.roi??1e99)-(ranked[6]?.roi??-1e99))<1e-9;
   const cautions=[];
-  if(stale)cautions.push("⚠ 일부 종목 시세가 지연되어 현재 순위는 잠정입니다.");
+  if(stale)cautions.push("⚠ 시세 지연 또는 지연 여부 미확인으로 순위는 잠정입니다.");
+  if(Object.values(priceData?.markets||{}).some(q=>q.asOf))cautions.push("가격 유형·세션·기준시각이 다를 수 있습니다. 세션 중 순위는 잠정입니다.");
   if(cut)cautions.push("⚠ 술값 커트라인에 동률이 있습니다. 실제 내기 규칙을 정해야 합니다.");
-  $("rankFoot").textContent=cautions.join(" ")||"수익률 = (최근 확정 종가 ÷ 시작 단가 − 1) × 100 · 공동 순위 인정";
+  $("rankFoot").textContent="수익률 = (확인된 가격 ÷ 시작 단가 − 1) × 100 · 공동 순위 인정"+(cautions.length?" · "+cautions.join(" "):"");
 }
 function toast(message){
   const el=$("toast");
@@ -148,7 +179,7 @@ function cleanHistory(values){
   }).sort((a,b)=>a.day.localeCompare(b.day));
 }
 // 월~일을 한 주로 묶고, 한국시간 토요일 기록을 대표값으로 사용합니다.
-// 토요일 기록은 미국 금요일 종가 및 한국 금요일 종가가 모두 반영된 상태입니다.
+// 토요일 기록은 그 시각에 확인한 가격 기준. v2에는 종가와 세션 가격이 섞일 수 있습니다.
 // 미완료 주는 마지막으로 확보된 일별 기록을 사용합니다.
 function saturdayOfWeek(iso){
   const day=new Date(iso+"T12:00:00Z");
@@ -198,7 +229,7 @@ function buildChart(){
   const tip=$("chartHover"); if(tip)tip.hidden=true;
   notice.hidden=true;
   if(chartRecords.length<2){
-    element.innerHTML='<div class="chart-empty">주간 순위 기록이 아직 부족합니다.<br>실제 확정 종가 기록이 2주 이상 쌓이면 표시됩니다.</div>';
+    element.innerHTML='<div class="chart-empty">주간 순위 기록이 아직 부족합니다.<br>실제 가격 기록이 2주 이상 쌓이면 표시됩니다.</div>';
     foot.textContent=chartRecords.length?"1주 기록 · 다음 주부터 선 표시":"과거 순위 기록 대기";
     if(history.length && !cleanHistory(history).length){
       notice.hidden=false;notice.textContent="유효한 실제 순위 기록이 없습니다. GitHub Actions 과거 복원 결과를 확인해주세요.";
@@ -275,7 +306,7 @@ function buildChart(){
     const idx=Math.round(ratio*(chartRecords.length-1));
     const rec=chartRecords[idx];
     const active=CHART_SERIES.filter(s=>!focusedSeries||s.id===focusedSeries);
-    tip.innerHTML=`<b>${asShort(rec.day)} 기준${rec.complete?"":" · 주중/대체 기록"}</b><div>${active.map(s=>`<span style="color:${s.color}">●</span> ${escapeHtml(s.label)} ${rec.ranks[s.id]}위`).join("<br>")}</div>`;
+    tip.innerHTML=`<b>${asShort(rec.day)} 기준${rec.complete?"":" · 주중/대체 기록"}${rec.quotes?" · 시세 스냅샷":" · 종가 기록"}</b><div>${active.map(s=>`<span style="color:${s.color}">●</span> ${escapeHtml(s.label)} ${rec.ranks[s.id]}위`).join("<br>")}</div>`;
     tip.hidden=false;
     const wrap=element.getBoundingClientRect();
     tip.style.left=Math.min(Math.max(5,ev.clientX-wrap.left+10),Math.max(5,wrap.width-195))+"px";
@@ -318,7 +349,7 @@ async function loadData(){
   }
 }
 function init(){
-  globalThis.BattleDetails?.init({getData:()=>({participants:PARTICIPANTS,prices:priceData,history})});
+  globalThis.BattleDetails?.init({getData:()=>({participants:PARTICIPANTS,prices:priceData,history}),quoteLabel:quoteBasisLabel});
   $("period").addEventListener("change",buildChart);
   $("legend").addEventListener("click",e=>{
     const button=e.target.closest("[data-series]");

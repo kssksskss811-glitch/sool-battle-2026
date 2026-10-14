@@ -7,9 +7,9 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css?v=participant-detail-v1">
-  <script defer src="./assets/details.js?v=participant-detail-v1"></script>
-  <script defer src="./assets/app.js?v=participant-detail-v1"></script>
+  <link rel="stylesheet" href="./assets/style.css?v=market-quotes-v2">
+  <script defer src="./assets/details.js?v=market-quotes-v2"></script>
+  <script defer src="./assets/app.js?v=market-quotes-v2"></script>
 </head>
 <body>
 <div class="app">
@@ -26,18 +26,19 @@
           </span>
         </div>
       </div>
-      <div class="update-schedule" aria-label="종가 확인 예약 시각">
-        <span class="schedule-caption">🔎 키오 종가 확인</span>
-        <span class="schedule-chip">매일 <strong>17:30 KST</strong></span>
+      <div class="update-schedule" aria-label="시세 확인 계획; 예약 변경은 별도 확인 필요">
+        <span class="schedule-caption">🔎 시세 확인 계획</span>
+        <span class="schedule-chip">매일 <strong>09:10 KST</strong> · 예약 변경 별도 확인</span>
       </div>
-      <div class="quote-dates" aria-label="시장별 종가 기준일과 코인 일봉 마감 시각">
-        <span class="quote-date"><span>🇰🇷 국장 종가</span><strong id="krCloseDay">확인 중</strong></span>
-        <span class="quote-date"><span>🇺🇸 미장 종가</span><strong id="usCloseDay">확인 중</strong></span>
-        <span class="quote-date quote-date-btc"><span>₿ 코인 일봉 마감</span><strong id="btcCandleClose">확인 중</strong></span>
+      <div class="quote-dates" aria-label="시장별 실제 가격 기준시각·세션·출처 지연 여부">
+        <span class="quote-date"><span>🇰🇷 국장 가격 기준</span><strong id="krCloseDay">확인 중</strong></span>
+        <span class="quote-date"><span>🇺🇸 미장 가격 기준</span><strong id="usCloseDay">확인 중</strong></span>
+        <span class="quote-date quote-date-btc"><span>₿ 코인 가격 기준</span><strong id="btcCandleClose">확인 중</strong></span>
       </div>
     </div>
     <div class="header-right">
       <span id="asOf">최신 데이터 확인 중</span>
+      <span id="verifiedAt">입력 확인 시각 확인 중</span>
       <span class="status" id="dataStatus"><i></i> 데이터 로딩 중</span>
       <button id="share" class="share" type="button" title="카톡 공유용 주소 복사">공유 <span aria-hidden="true">↗</span></button>
     </div>
@@ -52,12 +53,12 @@
         <span class="end-date">결산 12.31</span>
       </div>
       <div class="rank-head" aria-hidden="true">
-        <span>순위</span><span>참가자 / 종목</span><span>누적 수익률</span><span>최근 종가 <small>(시작가)</small></span>
+        <span>순위</span><span>참가자 / 종목</span><span>누적 수익률</span><span>확인된 가격 <small>(시작가)</small></span>
       </div>
       <div id="rankRows" class="rank-rows" aria-live="polite">
         <div class="loading">가격 데이터를 확인하는 중입니다...</div>
       </div>
-      <div class="rank-footer" id="rankFoot">수익률 = (마지막 확정 종가 ÷ 2026년 1월 시작 단가 − 1) × 100</div>
+      <div class="rank-footer" id="rankFoot">수익률 = (확인된 가격 ÷ 2026년 1월 시작 단가 − 1) × 100</div>
     </section>
     <div class="right-stack">
       <section class="panel risk-panel" aria-labelledby="riskTitle">
@@ -90,14 +91,14 @@
           </div>
         </div>
         <div class="graph-foot">
-          <span><b>1위 ↑</b> · 매주 순위 확정 시 변동 · 선 선택 가능</span>
+          <span><b>1위 ↑</b> · 주간 저장 기록 기준 · 선 선택 가능</span>
           <span id="chartRange">과거 기록 불러오는 중</span>
         </div>
         <p id="chartNotice" class="chart-notice" hidden></p>
       </section>
     </div>
   </main>
-  <footer class="page-foot">※ 주식은 확정 종가 기준, 비트코인은 업비트 원화 일봉(09시 마감). 순위 차트는 저장된 과거 기록 및 수동 입력한 주간 기록을 보여줍니다. 시세 제공처 사정으로 기록이 일부 누락될 수 있습니다.</footer>
+  <footer class="page-foot">※ 가격별 실제 기준시각·세션·출처 지연 여부를 확인하세요. 주식의 데이장·프리장·정규장·시간외 거래가격과 직전 종가, BTC 현물과 완료 일봉을 구분합니다. 과거 종가 기록은 보존되며 차트는 각 저장 시점의 순위입니다. 09:10 KST는 확인 계획이며 예약 변경 완료를 뜻하지 않습니다.</footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 <dialog id="participantDetail" class="detail-dialog" aria-labelledby="detailTitle" aria-describedby="detailAssumption">
