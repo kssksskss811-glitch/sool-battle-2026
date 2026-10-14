@@ -1,38 +1,38 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-10-13",
-  "verified_at": "2026-10-13T17:43:26+09:00",
+  "trade_date": "2026-10-14",
+  "verified_at": "2026-10-14T08:26:59.265Z",
   "markets": {
     "NVDA": {
-      "price": 226.32,
-      "date": "2026-10-12",
+      "price": 228.52,
+      "date": "2026-10-13",
       "currency": "USD",
       "source": {
-        "name": "Yahoo Finance",
-        "url": "https://finance.yahoo.com/quote/NVDA/history/"
+        "name": "MarketBeat",
+        "url": "https://www.marketbeat.com/stocks/NASDAQ/NVDA/chart/"
       }
     },
     "TSLA": {
-      "price": 378.03,
-      "date": "2026-10-12",
+      "price": 375.23,
+      "date": "2026-10-13",
       "currency": "USD",
       "source": {
-        "name": "Yahoo Finance",
-        "url": "https://finance.yahoo.com/quote/TSLA/history/"
+        "name": "MarketBeat",
+        "url": "https://www.marketbeat.com/stocks/NASDAQ/TSLA/chart/"
       }
     },
     "AMZN": {
-      "price": 259.53,
-      "date": "2026-10-12",
+      "price": 258.58,
+      "date": "2026-10-13",
       "currency": "USD",
       "source": {
-        "name": "Yahoo Finance",
-        "url": "https://finance.yahoo.com/quote/AMZN/history/"
+        "name": "MarketBeat",
+        "url": "https://www.marketbeat.com/stocks/NASDAQ/AMZN/chart/"
       }
     },
     "GOOGL": {
-      "price": 352.72,
-      "date": "2026-10-12",
+      "price": 353.78,
+      "date": "2026-10-13",
       "currency": "USD",
       "source": {
         "name": "MarketBeat",
@@ -40,17 +40,17 @@
       }
     },
     "KRW-BTC": {
-      "price": 110863000,
-      "date": "2026-10-12",
+      "price": 112593000,
+      "date": "2026-10-13",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-13T00%3A00%3A00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-14T00%3A00%3A00Z&count=1"
       }
     },
     "034020.KS": {
-      "price": 70200,
-      "date": "2026-10-13",
+      "price": 69400,
+      "date": "2026-10-14",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
@@ -58,8 +58,8 @@
       }
     },
     "267260.KS": {
-      "price": 560000,
-      "date": "2026-10-13",
+      "price": 543000,
+      "date": "2026-10-14",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
@@ -67,8 +67,8 @@
       }
     },
     "011200.KS": {
-      "price": 22050,
-      "date": "2026-10-13",
+      "price": 23350,
+      "date": "2026-10-14",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
