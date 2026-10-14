@@ -39,6 +39,8 @@ class ManualUpdateTests(unittest.TestCase):
             prior["markets"][symbol]["date"] = close_day
         prior["mode"] = "live"
         prior["locked"] = False
+        prior["updatedAt"] = (NOW - timedelta(days=1)).isoformat()
+        prior.pop("manualInput", None)  # Production verification belongs to a different fixture day.
         self.price.write_text(json.dumps(prior), "utf-8")
         self.env = {"INPUT_TRADE_DATE": "2026-10-13"}
         for key, (symbol, _) in manual.SYMBOLS.items():

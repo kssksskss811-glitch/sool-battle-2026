@@ -33,7 +33,7 @@
       if(previous&&String(previous.updatedAt||"")>String(record.updatedAt||""))continue;
       const roi=record.returns[participant.id];
       const rank=record.ranks?.[participant.id];
-      days.set(record.day,{day:record.day,updatedAt:record.updatedAt,roi,price:participant.start*(1+roi/100),rank:Number.isInteger(rank)&&rank>=1&&rank<=9?rank:null,sourceDay:record.priceDates?.[participant.ticker]||null});
+      days.set(record.day,{day:record.day,updatedAt:record.updatedAt,roi,price:participant.start*(1+roi/100),rank:Number.isInteger(rank)&&rank>=1&&rank<=9?rank:null,sourceDay:record.priceDates?.[participant.ticker]||null,quote:record.quotes?.[participant.ticker]||null});
     }
     const points=[...days.values()].sort((a,b)=>a.day.localeCompare(b.day));
     if(period==="all"||!points.length)return points;
@@ -91,6 +91,7 @@
     refresh();dialog.scrollTop=0;$("detailClose").focus({preventScroll:true});
   }
   function quoteDate(p){
+    if(config?.quoteLabel)return config.quoteLabel(p.quote,p.ticker);
     const day=p.quote.date;
     if(!dayDate(day))return "종가 기준일 미확인";
     if(p.ticker!=="KRW-BTC")return "종가 기준일 "+day.replaceAll("-",".");
@@ -119,7 +120,7 @@
     const line=points.map((p,i)=>(i?"L":"M")+x(p).toFixed(2)+" "+y(values[i]).toFixed(2)).join(" ");
     out.push(`<path d="${line}" fill="none" stroke="${model.person.color}" stroke-width="2.8" stroke-linejoin="round"/>`);
     for(const i of [...new Set([0,Math.floor(points.length/2),points.length-1])])out.push(`<text x="${x(points[i])}" y="${H-6}" text-anchor="middle" fill="#7b8ca1" font-size="11">${points[i].day.slice(5)}</text>`);
-    for(let i=0;i<points.length;i++){const p=points[i];out.push(`<circle cx="${x(p)}" cy="${y(values[i])}" r="${i===points.length-1?4:2}" fill="${model.person.color}"><title>${p.day} 저장 · ${esc(format(values[i]))} · 수익률 ${pct(p.roi)}${p.sourceDay?" · 종가 기준일 "+p.sourceDay:" · 종가 기준일 미기록"}</title></circle>`);}
+    for(let i=0;i<points.length;i++){const p=points[i],basis=p.quote&&config.quoteLabel?config.quoteLabel(p.quote,model.person.ticker):p.sourceDay?"종가 기준일 "+p.sourceDay:"종가 기준일 미기록";out.push(`<circle cx="${x(p)}" cy="${y(values[i])}" r="${i===points.length-1?4:2}" fill="${model.person.color}"><title>${p.day} 저장 · ${esc(format(values[i]))} · 수익률 ${pct(p.roi)} · ${esc(basis)}</title></circle>`);}
     element.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(model.person.asset)} 저장 기록 기준 ${metric==="price"?"환산 가격":"수익률"} 차트">${out.join("")}</svg>`;
   }
   function refresh(){
@@ -130,10 +131,10 @@
     $("detailTitle").textContent=p.name+"의 "+p.asset;
     const rank=model.complete?(model.joint?"공동 ":"")+p.rank+"위":"확인 중";
     const safety={safe:"안전권",risk:"술값 후보",boundary:"공동 경계",pending:"확인 중"}[model.safety.status];
-    const safetySub=model.safety.status==="boundary"?"동률 선정 규칙 확인 필요":model.safety.gap===null?"모든 종가 확인 후 계산":(model.safety.status==="safe"?"술값 경계와 ":"안전선까지 ")+gap(model.safety.gap);
+    const safetySub=model.safety.status==="boundary"?"동률 선정 규칙 확인 필요":model.safety.gap===null?"모든 가격 확인 후 계산":(model.safety.status==="safe"?"술값 경계와 ":"안전선까지 ")+gap(model.safety.gap);
     const cards=[["현재 순위",rank,model.joint?model.tiedNames.join("·")+"와 공동 순위":"참가자 "+data.participants.length+"명"],["누적 수익률",pct(p.roi),"시작가격 대비"],["바로 앞과 격차",model.ahead?gap(model.ahead.gap):model.complete?"선두":"미확인",model.ahead?names(model.ahead.group):"상위 수익률 그룹 기준"],["바로 뒤와 격차",model.behind?gap(model.behind.gap):model.complete?"마지막 순위":"미확인",model.behind?names(model.behind.group):"하위 수익률 그룹 기준"],["1위와 격차",gap(model.leaderGap),"현재 선두 수익률 기준"],["술값 상태",safety,safetySub]];
     $("detailSummary").innerHTML=`<div class="detail-quote"><span class="detail-avatar">${esc(p.name[0])}</span><div><p>${esc(p.asset)} · ${esc(p.ticker)}</p><strong>${priceFmt(p.price,p.cur)}</strong><small>${esc(quoteDate(p))} · 시작 ${priceFmt(p.start,p.cur)}</small></div></div><div class="detail-cards">${cards.map(([label,value,note])=>`<div class="detail-card"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(note)}</small></div>`).join("")}</div>`;
-    let duel=model.complete?(model.ahead?`<p><b>${esc(names(model.ahead.group))} 따라잡기</b><br>${targetText(model.aheadTarget,p,"추월")}</p>`:"<p><b>현재 선두예요 🏁</b><br>동일 수익률은 공동 순위로 표시합니다.</p>"):"<p>전체 종가가 확보되면 순위 격차와 목표를 계산합니다.</p>";
+    let duel=model.complete?(model.ahead?`<p><b>${esc(names(model.ahead.group))} 따라잡기</b><br>${targetText(model.aheadTarget,p,"추월")}</p>`:"<p><b>현재 선두예요 🏁</b><br>동일 수익률은 공동 순위로 표시합니다.</p>"):"<p>전체 가격이 확보되면 순위 격차와 목표를 계산합니다.</p>";
     if(model.safety.status==="risk"||model.safety.status==="boundary")duel+=`<p><b>${model.safety.status==="boundary"?"공동 경계 · 내기 규칙 확인":"술값권 탈출선"}</b><br>${targetText(model.safety.target,p,"안전선 통과")}</p>`;
     if(model.peers.length)duel+=`<p class="detail-peer">${esc(model.peers.map(p=>p.name).join("·"))}도 같은 종목이에요. 같은 시작가격이면 서로를 혼자 추월할 수 없습니다.</p>`;
     $("detailDuel").innerHTML=duel;
