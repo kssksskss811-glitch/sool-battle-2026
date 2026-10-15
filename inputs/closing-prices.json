@@ -1,56 +1,56 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-10-14",
-  "verified_at": "2026-10-14T08:26:59.265Z",
+  "trade_date": "2026-10-15",
+  "verified_at": "2026-10-15T08:37:15Z",
   "markets": {
     "NVDA": {
-      "price": 228.52,
-      "date": "2026-10-13",
+      "price": 221.3,
+      "date": "2026-10-14",
       "currency": "USD",
       "source": {
-        "name": "MarketBeat",
-        "url": "https://www.marketbeat.com/stocks/NASDAQ/NVDA/chart/"
+        "name": "Stock Analysis",
+        "url": "https://stockanalysis.com/stocks/nvda/history/"
       }
     },
     "TSLA": {
-      "price": 375.23,
-      "date": "2026-10-13",
+      "price": 367.16,
+      "date": "2026-10-14",
       "currency": "USD",
       "source": {
-        "name": "MarketBeat",
-        "url": "https://www.marketbeat.com/stocks/NASDAQ/TSLA/chart/"
+        "name": "Stock Analysis",
+        "url": "https://stockanalysis.com/stocks/tsla/history/"
       }
     },
     "AMZN": {
-      "price": 258.58,
-      "date": "2026-10-13",
+      "price": 254.08,
+      "date": "2026-10-14",
       "currency": "USD",
       "source": {
-        "name": "MarketBeat",
-        "url": "https://www.marketbeat.com/stocks/NASDAQ/AMZN/chart/"
+        "name": "Stock Analysis",
+        "url": "https://stockanalysis.com/stocks/amzn/history/"
       }
     },
     "GOOGL": {
-      "price": 353.78,
-      "date": "2026-10-13",
+      "price": 347.64,
+      "date": "2026-10-14",
       "currency": "USD",
       "source": {
-        "name": "MarketBeat",
-        "url": "https://www.marketbeat.com/stocks/NASDAQ/GOOGL/chart/"
+        "name": "Stock Analysis",
+        "url": "https://stockanalysis.com/stocks/googl/history/"
       }
     },
     "KRW-BTC": {
-      "price": 112593000,
-      "date": "2026-10-13",
+      "price": 110338000,
+      "date": "2026-10-14",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-14T00%3A00%3A00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-15T00%3A00%3A00Z&count=1"
       }
     },
     "034020.KS": {
-      "price": 69400,
-      "date": "2026-10-14",
+      "price": 63300,
+      "date": "2026-10-15",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
@@ -58,8 +58,8 @@
       }
     },
     "267260.KS": {
-      "price": 543000,
-      "date": "2026-10-14",
+      "price": 487000,
+      "date": "2026-10-15",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
@@ -67,8 +67,8 @@
       }
     },
     "011200.KS": {
-      "price": 23350,
-      "date": "2026-10-14",
+      "price": 23200,
+      "date": "2026-10-15",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
