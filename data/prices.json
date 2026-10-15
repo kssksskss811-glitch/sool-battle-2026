@@ -1,67 +1,67 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-10-14T17:27:16+09:00",
+  "updatedAt": "2026-10-15T17:39:06+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
-      "price": 228.52,
-      "date": "2026-10-13",
+      "price": 221.3,
+      "date": "2026-10-14",
       "currency": "USD",
-      "source": "MarketBeat",
-      "sourceUrl": "https://www.marketbeat.com/stocks/NASDAQ/NVDA/chart/",
+      "source": "Stock Analysis",
+      "sourceUrl": "https://stockanalysis.com/stocks/nvda/history/",
       "stale": false
     },
     "TSLA": {
-      "price": 375.23,
-      "date": "2026-10-13",
+      "price": 367.16,
+      "date": "2026-10-14",
       "currency": "USD",
-      "source": "MarketBeat",
-      "sourceUrl": "https://www.marketbeat.com/stocks/NASDAQ/TSLA/chart/",
+      "source": "Stock Analysis",
+      "sourceUrl": "https://stockanalysis.com/stocks/tsla/history/",
       "stale": false
     },
     "AMZN": {
-      "price": 258.58,
-      "date": "2026-10-13",
+      "price": 254.08,
+      "date": "2026-10-14",
       "currency": "USD",
-      "source": "MarketBeat",
-      "sourceUrl": "https://www.marketbeat.com/stocks/NASDAQ/AMZN/chart/",
+      "source": "Stock Analysis",
+      "sourceUrl": "https://stockanalysis.com/stocks/amzn/history/",
       "stale": false
     },
     "GOOGL": {
-      "price": 353.78,
-      "date": "2026-10-13",
+      "price": 347.64,
+      "date": "2026-10-14",
       "currency": "USD",
-      "source": "MarketBeat",
-      "sourceUrl": "https://www.marketbeat.com/stocks/NASDAQ/GOOGL/chart/",
+      "source": "Stock Analysis",
+      "sourceUrl": "https://stockanalysis.com/stocks/googl/history/",
       "stale": false
     },
     "KRW-BTC": {
-      "price": 112593000,
-      "date": "2026-10-13",
+      "price": 110338000,
+      "date": "2026-10-14",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-14T00%3A00%3A00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-15T00%3A00%3A00Z&count=1",
       "stale": false
     },
     "034020.KS": {
-      "price": 69400,
-      "date": "2026-10-14",
+      "price": 63300,
+      "date": "2026-10-15",
       "currency": "KRW",
       "source": "한국경제",
       "sourceUrl": "https://markets.hankyung.com/stock/034020",
       "stale": false
     },
     "267260.KS": {
-      "price": 543000,
-      "date": "2026-10-14",
+      "price": 487000,
+      "date": "2026-10-15",
       "currency": "KRW",
       "source": "한국경제",
       "sourceUrl": "https://markets.hankyung.com/stock/267260",
       "stale": false
     },
     "011200.KS": {
-      "price": 23350,
-      "date": "2026-10-14",
+      "price": 23200,
+      "date": "2026-10-15",
       "currency": "KRW",
       "source": "한국경제",
       "sourceUrl": "https://markets.hankyung.com/stock/011200",
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-10-14 한국시간 스냅샷입니다. 종목별 종가 기준일은 markets.date, 데이터 갱신 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-10-15 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "d8fdc8defd49b37bc0395044cf69083221d67d75",
-    "verifiedAt": "2026-10-14T17:26:59+09:00",
-    "commit": "f33822f0d27ebf9c63f6c3989ac46b2b4e5678e6"
+    "sha": "657ae2028c567616499dbc70c349ef6819ad336e",
+    "verifiedAt": "2026-10-15T17:37:15+09:00",
+    "commit": "221f0f1edd0b32891f762d0cfe8ffbf7b798669b"
   }
 }
