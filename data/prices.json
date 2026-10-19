@@ -1,6 +1,6 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-10-18T17:37:04+09:00",
+  "updatedAt": "2026-10-19T18:10:40+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
@@ -36,32 +36,32 @@
       "stale": false
     },
     "KRW-BTC": {
-      "price": 110137000,
-      "date": "2026-10-17",
+      "price": 110525000,
+      "date": "2026-10-18",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-18T00%3A00%3A00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-19T00%3A00%3A00Z&count=1",
       "stale": false
     },
     "034020.KS": {
-      "price": 64600,
-      "date": "2026-10-16",
+      "price": 66600,
+      "date": "2026-10-19",
       "currency": "KRW",
       "source": "한국경제",
       "sourceUrl": "https://markets.hankyung.com/stock/034020",
       "stale": false
     },
     "267260.KS": {
-      "price": 516000,
-      "date": "2026-10-16",
+      "price": 525000,
+      "date": "2026-10-19",
       "currency": "KRW",
       "source": "한국경제",
       "sourceUrl": "https://markets.hankyung.com/stock/267260",
       "stale": false
     },
     "011200.KS": {
-      "price": 23500,
-      "date": "2026-10-16",
+      "price": 24000,
+      "date": "2026-10-19",
       "currency": "KRW",
       "source": "한국경제",
       "sourceUrl": "https://markets.hankyung.com/stock/011200",
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-10-18 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-10-19 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "f94b80ad59028ad6f7bfff72236f8a80e97147c0",
-    "verifiedAt": "2026-10-18T17:36:44.744000+09:00",
-    "commit": "9c6b5ac4a49ed3548f6bb9dae0048768b165e45f"
+    "sha": "7f750673f8cf152cb7df5637b516ae641bcb4059",
+    "verifiedAt": "2026-10-19T17:36:24+09:00",
+    "commit": "034b641c1c87ca3387022af36c5bf2f6d49cd2b9"
   }
 }
