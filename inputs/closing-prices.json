@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-10-20",
-  "verified_at": "2026-10-20T08:30:45.799Z",
+  "trade_date": "2026-10-22",
+  "verified_at": "2026-10-22T08:36:58.133Z",
   "markets": {
     "NVDA": {
-      "price": 217.09,
-      "date": "2026-10-19",
+      "price": 221.97,
+      "date": "2026-10-21",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -13,8 +13,8 @@
       }
     },
     "TSLA": {
-      "price": 368.06,
-      "date": "2026-10-19",
+      "price": 386.47,
+      "date": "2026-10-21",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -22,8 +22,8 @@
       }
     },
     "AMZN": {
-      "price": 262.45,
-      "date": "2026-10-19",
+      "price": 262.37,
+      "date": "2026-10-21",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -31,8 +31,8 @@
       }
     },
     "GOOGL": {
-      "price": 344.18,
-      "date": "2026-10-19",
+      "price": 334.76,
+      "date": "2026-10-21",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -40,17 +40,17 @@
       }
     },
     "KRW-BTC": {
-      "price": 110199000,
-      "date": "2026-10-19",
+      "price": 111977000,
+      "date": "2026-10-21",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-20T00%3A00%3A00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-22T00%3A00%3A00Z&count=1"
       }
     },
     "034020.KS": {
-      "price": 62800,
-      "date": "2026-10-20",
+      "price": 61600,
+      "date": "2026-10-22",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
@@ -58,8 +58,8 @@
       }
     },
     "267260.KS": {
-      "price": 487500,
-      "date": "2026-10-20",
+      "price": 490000,
+      "date": "2026-10-22",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
@@ -67,8 +67,8 @@
       }
     },
     "011200.KS": {
-      "price": 23450,
-      "date": "2026-10-20",
+      "price": 22650,
+      "date": "2026-10-22",
       "currency": "KRW",
       "source": {
         "name": "한국경제",
