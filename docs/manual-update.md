@@ -39,7 +39,7 @@ v1 종목 객체의 키는 아래 4개만 허용합니다. 기존 v1 입력·종
 | 종목 | 허용 출처 호스트 |
 |---|---|
 | 미국 | `finance.yahoo.com`, `nasdaq.com`, `www.nasdaq.com`, `stockanalysis.com`, `www.marketbeat.com` |
-| 한국 | `finance.naver.com`, `m.stock.naver.com`, `finance.daum.net`, `data.krx.co.kr`, `www.krx.co.kr`, `markets.hankyung.com` |
+| 한국 | `finance.naver.com`, `m.stock.naver.com`, `finance.daum.net`, `data.krx.co.kr`, `www.krx.co.kr`, `markets.hankyung.com`, `kind.krx.co.kr` |
 | BTC | `api.upbit.com`의 `/v1/candles/days` (`market=KRW-BTC` 정확히 1개); v2 현물은 `/v1/ticker` (`markets=KRW-BTC` 정확히 1개) |
 
 미국 출처 URL 예: `https://finance.yahoo.com/quote/NVDA/history/`.
@@ -174,3 +174,10 @@ Node.js가 있으면 실제 프런트 코드의 순위·주간 집계 호환성�
 않습니다. 워크플로 변경, 예약 변경, main 병합, 실제 가격 입력·배포는 코드 검증과
 분리해 검토해야 합니다. UI 변경을 main에 병합하면 기존 manual.yml UI 경로가 배포를
 실행하므로 병합 자체도 운영 검토 후 진행합니다.
+
+## KRX KIND 공식 출처
+KIND는 `https://kind.krx.co.kr/common/stockprices.do?isurCd=03402&method=searchStockPricesMain`
+형식만 허용합니다. 두산에너빌리티 034020→03402, HD현대일렉트릭 267260→26726,
+HMM 011200→01120를 정확히 대응하며, 다른 경로·조회 방식·추가/중복 쿼리·fragment를 거부합니다.
+KIND의 실제 마감 시각과 거래일을 열람해 확인한 경우만 사용합니다.
+기존 8종목 필수·확정 종가·통화·시각·역행 방지 검증은 그대로 유지합니다.
