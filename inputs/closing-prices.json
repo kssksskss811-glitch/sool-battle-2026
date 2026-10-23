@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-10-22",
-  "verified_at": "2026-10-22T08:36:58.133Z",
+  "trade_date": "2026-10-23",
+  "verified_at": "2026-10-23T08:41:58.847Z",
   "markets": {
     "NVDA": {
-      "price": 221.97,
-      "date": "2026-10-21",
+      "price": 212.21,
+      "date": "2026-10-22",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -13,8 +13,8 @@
       }
     },
     "TSLA": {
-      "price": 386.47,
-      "date": "2026-10-21",
+      "price": 374.58,
+      "date": "2026-10-22",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -22,8 +22,8 @@
       }
     },
     "AMZN": {
-      "price": 262.37,
-      "date": "2026-10-21",
+      "price": 250.38,
+      "date": "2026-10-22",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -31,8 +31,8 @@
       }
     },
     "GOOGL": {
-      "price": 334.76,
-      "date": "2026-10-21",
+      "price": 324.22,
+      "date": "2026-10-22",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -40,39 +40,39 @@
       }
     },
     "KRW-BTC": {
-      "price": 111977000,
-      "date": "2026-10-21",
+      "price": 108903000,
+      "date": "2026-10-22",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-22T00%3A00%3A00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-23T00%3A00%3A00Z&count=1"
       }
     },
     "034020.KS": {
-      "price": 61600,
-      "date": "2026-10-22",
+      "price": 59400,
+      "date": "2026-10-23",
       "currency": "KRW",
       "source": {
-        "name": "한국경제",
-        "url": "https://markets.hankyung.com/stock/034020"
+        "name": "KRX KIND",
+        "url": "https://kind.krx.co.kr/common/stockprices.do?isurCd=03402&method=searchStockPricesMain"
       }
     },
     "267260.KS": {
-      "price": 490000,
-      "date": "2026-10-22",
+      "price": 470000,
+      "date": "2026-10-23",
       "currency": "KRW",
       "source": {
-        "name": "한국경제",
-        "url": "https://markets.hankyung.com/stock/267260"
+        "name": "Npay 증권",
+        "url": "https://m.stock.naver.com/domestic/stock/267260/price"
       }
     },
     "011200.KS": {
       "price": 22650,
-      "date": "2026-10-22",
+      "date": "2026-10-23",
       "currency": "KRW",
       "source": {
-        "name": "한국경제",
-        "url": "https://markets.hankyung.com/stock/011200"
+        "name": "KRX KIND",
+        "url": "https://kind.krx.co.kr/common/stockprices.do?isurCd=01120&method=searchStockPricesMain"
       }
     }
   }
