@@ -28,7 +28,7 @@ PEOPLE=[
 KST=timezone(timedelta(hours=9))
 INPUT_PATH="inputs/closing-prices.json"
 USD_HOSTS={"finance.yahoo.com","nasdaq.com","www.nasdaq.com","stockanalysis.com","www.marketbeat.com"}
-KR_HOSTS={"finance.naver.com","m.stock.naver.com","finance.daum.net","data.krx.co.kr","www.krx.co.kr","markets.hankyung.com"}
+KR_HOSTS={"finance.naver.com","m.stock.naver.com","finance.daum.net","data.krx.co.kr","www.krx.co.kr","markets.hankyung.com","kind.krx.co.kr"}
 
 def parse_instant(raw,label,precise=False):
  if not isinstance(raw,str) or precise and not re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}",raw):
@@ -183,6 +183,13 @@ def load_input(path,now):
    query_key="markets" if spot else "market"
    if url.path!=endpoint or parse_qs(url.query,keep_blank_values=True).get(query_key)!=["KRW-BTC"]:
     raise ValueError("BTC 출처는 가격 유형에 맞는 업비트 KRW-BTC 현물/완료 일봉 URL이어야 합니다.")
+  elif url.hostname=="kind.krx.co.kr":
+   # KIND issuer IDs are five digits, not arbitrary six-digit substring matches.
+   issuer={"034020.KS":"03402","267260.KS":"26726","011200.KS":"01120"}.get(symbol)
+   query=parse_qs(url.query,keep_blank_values=True)
+   if (url.path!="/common/stockprices.do" or url.fragment or
+       query!={"isurCd":[issuer],"method":["searchStockPricesMain"]}):
+    raise ValueError(f"{symbol}: KIND 종목·경로·조회 방식이 일치해야 합니다.")
   elif symbol.split(".")[0].lower() not in unquote(url.path+"?"+url.query).lower():
    raise ValueError(f"{symbol}: 출처 URL에 해당 종목 코드가 필요합니다.")
   markets[symbol]={"price":value,"date":close_day.isoformat(),"currency":currency,
