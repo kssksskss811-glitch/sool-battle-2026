@@ -152,6 +152,32 @@ class FileInputTests(unittest.TestCase):
             with self.subTest(symbol=symbol, url=invalid_url):
                 self.assert_invalid(invalid)
 
+    def test_kind_exact_official_issuer_urls(self):
+        payload = self.make_payload()
+        for symbol, issuer in (("034020.KS", "03402"), ("267260.KS", "26726"), ("011200.KS", "01120")):
+            payload["markets"][symbol]["source"] = {
+                "name": "KRX KIND", "url": "https://kind.krx.co.kr/common/stockprices.do?isurCd=" + issuer + "&method=searchStockPricesMain",
+            }
+        self.assertFalse(self.run_file(payload))
+        good = payload["markets"]["034020.KS"]["source"]["url"]
+        for bad in (
+            good.replace("kind.krx.co.kr", "kind.krx.co.kr.evil.test"),
+            good.replace("03402", "01120"),
+            good.replace("03402", "034020"),
+            good.replace("searchStockPricesMain", "other"),
+            good.replace("/common/stockprices.do", "/other"),
+            good + "&isurCd=03402", good + "&extra=034020", good + "#034020",
+            good.replace("https:", "http:"),
+            good.replace("kind.krx.co.kr", "user:password@kind.krx.co.kr"),
+        ):
+            invalid = copy.deepcopy(payload)
+            invalid["markets"]["034020.KS"]["source"]["url"] = bad
+            with self.subTest(url=bad):
+                self.assert_invalid(invalid)
+        invalid = copy.deepcopy(payload)
+        invalid["markets"]["NVDA"]["source"] = payload["markets"]["034020.KS"]["source"]
+        self.assert_invalid(invalid)
+
     def test_verification_timestamp_must_be_aware_recent_and_same_snapshot_day(self):
         for value in ("2026-10-13T17:29:00", "2026-10-13T17:31:00+09:00", "2026-10-12T17:29:00+09:00", None):
             p = self.make_payload()
