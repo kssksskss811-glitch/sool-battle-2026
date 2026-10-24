@@ -1,46 +1,46 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-10-23T18:07:17+09:00",
+  "updatedAt": "2026-10-24T18:38:42+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
-      "price": 212.21,
-      "date": "2026-10-22",
+      "price": 210.96,
+      "date": "2026-10-23",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/nvda/history/",
       "stale": false
     },
     "TSLA": {
-      "price": 374.58,
-      "date": "2026-10-22",
+      "price": 372.22,
+      "date": "2026-10-23",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/tsla/history/",
       "stale": false
     },
     "AMZN": {
-      "price": 250.38,
-      "date": "2026-10-22",
+      "price": 248,
+      "date": "2026-10-23",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/amzn/history/",
       "stale": false
     },
     "GOOGL": {
-      "price": 324.22,
-      "date": "2026-10-22",
+      "price": 320.21,
+      "date": "2026-10-23",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/googl/history/",
       "stale": false
     },
     "KRW-BTC": {
-      "price": 108903000,
-      "date": "2026-10-22",
+      "price": 108879000,
+      "date": "2026-10-23",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-23T00%3A00%3A00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-24T00%3A00%3A00Z&count=1",
       "stale": false
     },
     "034020.KS": {
@@ -55,8 +55,8 @@
       "price": 470000,
       "date": "2026-10-23",
       "currency": "KRW",
-      "source": "Npay 증권",
-      "sourceUrl": "https://m.stock.naver.com/domestic/stock/267260/price",
+      "source": "KRX KIND",
+      "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=26726&method=searchStockPricesMain",
       "stale": false
     },
     "011200.KS": {
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-10-23 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-10-24 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "4856d175261adccb8779a02f77cf26dabd5520c4",
-    "verifiedAt": "2026-10-23T17:41:58.847000+09:00",
-    "commit": "ceac469f0bc63bcc0715d0b378c9fb7b33cf55c6"
+    "sha": "bb47aea284793e9083bb456581a5787a6ad6dab2",
+    "verifiedAt": "2026-10-24T18:38:24.499000+09:00",
+    "commit": "bbf60e959b87c0de604d1bc9637a3ceffaba7d53"
   }
 }
