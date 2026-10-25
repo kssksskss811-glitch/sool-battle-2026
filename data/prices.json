@@ -1,6 +1,6 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-10-24T18:38:42+09:00",
+  "updatedAt": "2026-10-25T18:16:47+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
@@ -36,11 +36,11 @@
       "stale": false
     },
     "KRW-BTC": {
-      "price": 108879000,
-      "date": "2026-10-23",
+      "price": 108517000,
+      "date": "2026-10-24",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-24T00%3A00%3A00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-25T00%3A00%3A00Z&count=1",
       "stale": false
     },
     "034020.KS": {
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-10-24 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-10-25 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "bb47aea284793e9083bb456581a5787a6ad6dab2",
-    "verifiedAt": "2026-10-24T18:38:24.499000+09:00",
-    "commit": "bbf60e959b87c0de604d1bc9637a3ceffaba7d53"
+    "sha": "97f3c32014e6626cbc4d8ad2f1303a86b80245c1",
+    "verifiedAt": "2026-10-25T18:16:33.729000+09:00",
+    "commit": "ed205461bd3182eff943389c9ea35bb7861fa5fc"
   }
 }
