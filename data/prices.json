@@ -1,6 +1,6 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-10-25T18:16:47+09:00",
+  "updatedAt": "2026-10-26T18:17:43+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
@@ -36,32 +36,32 @@
       "stale": false
     },
     "KRW-BTC": {
-      "price": 108517000,
-      "date": "2026-10-24",
+      "price": 107210000,
+      "date": "2026-10-25",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-25T00%3A00%3A00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-26T00%3A00%3A00Z&count=1",
       "stale": false
     },
     "034020.KS": {
-      "price": 59400,
-      "date": "2026-10-23",
+      "price": 57600,
+      "date": "2026-10-26",
       "currency": "KRW",
       "source": "KRX KIND",
       "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=03402&method=searchStockPricesMain",
       "stale": false
     },
     "267260.KS": {
-      "price": 470000,
-      "date": "2026-10-23",
+      "price": 447000,
+      "date": "2026-10-26",
       "currency": "KRW",
       "source": "KRX KIND",
       "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=26726&method=searchStockPricesMain",
       "stale": false
     },
     "011200.KS": {
-      "price": 22650,
-      "date": "2026-10-23",
+      "price": 22550,
+      "date": "2026-10-26",
       "currency": "KRW",
       "source": "KRX KIND",
       "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=01120&method=searchStockPricesMain",
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-10-25 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-10-26 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "97f3c32014e6626cbc4d8ad2f1303a86b80245c1",
-    "verifiedAt": "2026-10-25T18:16:33.729000+09:00",
-    "commit": "ed205461bd3182eff943389c9ea35bb7861fa5fc"
+    "sha": "2d34541cc60f02db3681cb11551d42f224b10435",
+    "verifiedAt": "2026-10-26T18:17:10+09:00",
+    "commit": "43644ce516b07f9092866b75e7ce9d4a67feaaf0"
   }
 }
