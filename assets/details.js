@@ -130,7 +130,7 @@
     const p=model.person;$("participantDetail").style.setProperty("--person",p.color);
     $("detailTitle").textContent=p.name+"의 "+p.asset;
     const rank=model.complete?(model.joint?"공동 ":"")+p.rank+"위":"확인 중";
-    const safety={safe:"안전권",risk:"술값 후보",boundary:"공동 경계",pending:"확인 중"}[model.safety.status];
+    const safety=p.rank===5||p.rank===6?"간당간당":{safe:"안전권",risk:"술값 후보",boundary:"공동 경계",pending:"확인 중"}[model.safety.status];
     const safetySub=model.safety.status==="boundary"?"동률 선정 규칙 확인 필요":model.safety.gap===null?"모든 가격 확인 후 계산":(model.safety.status==="safe"?"술값 경계와 ":"안전선까지 ")+gap(model.safety.gap);
     const cards=[["현재 순위",rank,model.joint?model.tiedNames.join("·")+"와 공동 순위":"참가자 "+data.participants.length+"명"],["누적 수익률",pct(p.roi),"시작가격 대비"],["바로 앞과 격차",model.ahead?gap(model.ahead.gap):model.complete?"선두":"미확인",model.ahead?names(model.ahead.group):"상위 수익률 그룹 기준"],["바로 뒤와 격차",model.behind?gap(model.behind.gap):model.complete?"마지막 순위":"미확인",model.behind?names(model.behind.group):"하위 수익률 그룹 기준"],["1위와 격차",gap(model.leaderGap),"현재 선두 수익률 기준"],["술값 상태",safety,safetySub]];
     $("detailSummary").innerHTML=`<div class="detail-quote"><span class="detail-avatar">${esc(p.name[0])}</span><div><p>${esc(p.asset)} · ${esc(p.ticker)}</p><strong>${priceFmt(p.price,p.cur)}</strong><small>${esc(quoteDate(p))} · 시작 ${priceFmt(p.start,p.cur)}</small></div></div><div class="detail-cards">${cards.map(([label,value,note])=>`<div class="detail-card"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(note)}</small></div>`).join("")}</div>`;
