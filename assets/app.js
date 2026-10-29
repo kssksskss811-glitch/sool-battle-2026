@@ -67,6 +67,10 @@ function quoteTimeLabel(iso){
 }
 function quoteBasisLabel(quote,symbol){
   if(!quote)return "가격 기준 미확인";
+  if(quote.priceType==="user_override"){
+    const custom=quote.userOverride;
+    return "사용자 지정 현재가 · 실제 체결시각·세션 미확인 · 사용자 지정 시각 미기록 · 지정값 기록 "+quoteTimeLabel(custom.recordedAt)+" (체결시각 아님) · 보존 종가 "+custom.referenceClose.date+" "+fmtPrice(custom.referenceClose.price,quote.currency)+" · 이후 거래일의 정규장 종가 반영 시 자동 해제";
+  }
   const source=quote.source?" · 출처 "+quote.source:" · 출처 미확인";
   if(!quote.asOf){
     const basis=symbol==="KRW-BTC"?"완료 일봉 · 일봉 마감 "+bitcoinCloseLabel(quote.date):"확정 종가 · "+(sourceDayDate(quote.date)?quote.date.replaceAll("-","."):"기준일 미확인")+" · 실제 시각 미기록";
@@ -82,6 +86,7 @@ function marketQuoteLabel(markets,symbols){
   return labels.every(label=>label===labels[0])?labels[0]:symbols.map((symbol,i)=>symbol.replace(".KS","")+" "+labels[i]).join(" / ");
 }
 function quoteRowLabel(quote,symbol){
+  if(quote?.priceType==="user_override")return "사용자 지정 현재가 · 체결시각 미확인";
   const full=quoteBasisLabel(quote,symbol);
   if(!quote?.asOf)return full.split(" · 출처")[0];
   const parts=full.split(" · ");
@@ -142,15 +147,17 @@ function renderHeader(){
   $("btcCandleClose").textContent=quoteBasisLabel(priceData?.markets?.["KRW-BTC"],"KRW-BTC");
   $("verifiedAt").textContent=priceData?.manualInput?.verifiedAt?"입력 확인 "+quoteTimeLabel(priceData.manualInput.verifiedAt):"입력 확인 시각 미기록";
   const label=$("dataStatus");
+  const custom=Object.values(priceData?.markets||{}).some(q=>q.priceType==="user_override");
   const stale=ranked.some(p=>p.stale||p.price===null||!sourceDayDate(p.sourceDay)) || Object.values(priceData?.markets||{}).some(q=>q.asOf&&(!["realtime"].includes(q.delay?.status)||quoteTimeLabel(q.asOf)==="실제 시각 미확인")) || !["live","manual"].includes(priceData?.mode);
   label.classList.toggle("partial",stale);
-  label.innerHTML=stale?"<i></i> 지연 / 확인 필요":"<i></i> 확인된 가격 기준";
+  label.innerHTML=custom?"<i></i> 사용자 지정 현재가 포함 · 잠정 순위":stale?"<i></i> 지연 / 확인 필요":"<i></i> 확인된 가격 기준";
   const cut=ranked.length>=4 && Math.abs((ranked[5]?.roi??1e99)-(ranked[6]?.roi??-1e99))<1e-9;
   const cautions=[];
+  if(custom)cautions.push("GOOGL은 사용자 지정 현재가 $291.70으로 평가합니다. 검증된 실시간 체결값이나 종가가 아니며, 저장된 종가·히스토리는 유지됩니다.");
   if(stale)cautions.push("⚠ 시세 지연 또는 지연 여부 미확인으로 순위는 잠정입니다.");
   if(Object.values(priceData?.markets||{}).some(q=>q.asOf))cautions.push("가격 유형·세션·기준시각이 다를 수 있습니다. 세션 중 순위는 잠정입니다.");
   if(cut)cautions.push("⚠ 술값 커트라인에 동률이 있습니다. 실제 내기 규칙을 정해야 합니다.");
-  $("rankFoot").textContent="수익률 = (확인된 가격 ÷ 시작 단가 − 1) × 100 · 공동 순위 인정"+(cautions.length?" · "+cautions.join(" "):"");
+  $("rankFoot").textContent="수익률 = ("+(custom?"평가 가격":"확인된 가격")+" ÷ 시작 단가 − 1) × 100 · 공동 순위 인정"+(cautions.length?" · "+cautions.join(" "):"");
 }
 function toast(message){
   const el=$("toast");
@@ -330,7 +337,7 @@ async function loadData(){
     if(!quoteRes.ok)throw Error("prices.json HTTP "+quoteRes.status);
     const price=await quoteRes.json();
     if(!price?.markets)throw Error("가격 JSON 형식 오류");
-    priceData=price;
+    priceData=globalThis.UserPriceOverride?globalThis.UserPriceOverride.apply(price):price;
     if(histRes.ok){
       const hist=await histRes.json();
       if(Array.isArray(hist.history))history=hist.history;
