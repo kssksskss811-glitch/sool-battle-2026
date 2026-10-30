@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-10-29",
-  "verified_at": "2026-10-29T09:14:02.037Z",
+  "trade_date": "2026-10-30",
+  "verified_at": "2026-10-30T10:23:14.560Z",
   "markets": {
     "NVDA": {
-      "price": 215.38,
-      "date": "2026-10-28",
+      "price": 213.66,
+      "date": "2026-10-29",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -13,8 +13,8 @@
       }
     },
     "TSLA": {
-      "price": 404.22,
-      "date": "2026-10-28",
+      "price": 403.3,
+      "date": "2026-10-29",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -22,8 +22,8 @@
       }
     },
     "AMZN": {
-      "price": 254.6,
-      "date": "2026-10-28",
+      "price": 243.79,
+      "date": "2026-10-29",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -31,26 +31,17 @@
       }
     },
     "GOOGL": {
-      "price": 324.89,
-      "date": "2026-10-28",
+      "price": 283.82,
+      "date": "2026-10-29",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
         "url": "https://stockanalysis.com/stocks/googl/history/"
       }
     },
-    "KRW-BTC": {
-      "price": 108982000,
-      "date": "2026-10-28",
-      "currency": "KRW",
-      "source": {
-        "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-29T00:00:00Z&count=1"
-      }
-    },
     "034020.KS": {
-      "price": 56700,
-      "date": "2026-10-29",
+      "price": 54800,
+      "date": "2026-10-30",
       "currency": "KRW",
       "source": {
         "name": "KRX KIND",
@@ -58,8 +49,8 @@
       }
     },
     "267260.KS": {
-      "price": 440500,
-      "date": "2026-10-29",
+      "price": 424500,
+      "date": "2026-10-30",
       "currency": "KRW",
       "source": {
         "name": "KRX KIND",
@@ -67,12 +58,21 @@
       }
     },
     "011200.KS": {
-      "price": 22300,
-      "date": "2026-10-29",
+      "price": 23350,
+      "date": "2026-10-30",
       "currency": "KRW",
       "source": {
         "name": "KRX KIND",
         "url": "https://kind.krx.co.kr/common/stockprices.do?isurCd=01120&method=searchStockPricesMain"
+      }
+    },
+    "KRW-BTC": {
+      "price": 105354000,
+      "date": "2026-10-29",
+      "currency": "KRW",
+      "source": {
+        "name": "Upbit",
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-30T00:00:00Z&count=1"
       }
     }
   }
