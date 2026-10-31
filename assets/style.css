@@ -36,7 +36,7 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
 .asset{font-size:9px;color:#8492ad;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .performance{display:flex;gap:10px;align-items:center}
 .track{height:7px;border-radius:9px;background:#ebeff6;flex:1;min-width:26px;overflow:hidden}
-.track>i{display:block;height:100%;border-radius:9px;max-width:100%;min-width:2px;background:var(--perf)}
+.track>i{display:block;height:100%;border-radius:9px;max-width:100%;background:var(--perf)}
 .return{min-width:75px;text-align:right;font-size:16px;font-weight:900;color:var(--perf);letter-spacing:-.5px;white-space:nowrap}
 .price{text-align:right;font-size:13px;font-weight:900;white-space:nowrap}
 .price small{display:block;font-size:10px;color:#8e9bb0;font-weight:600;margin-top:4px}

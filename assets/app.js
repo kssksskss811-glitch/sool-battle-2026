@@ -113,9 +113,8 @@ function rankBadge(p) {
     :'<span class="rank-number">'+p.rank+'위</span>';
 }
 function renderRankRows() {
-  const maxAbs=Math.max(...ranked.map(x=>Math.abs(x.roi||0)),1);
   $("rankRows").innerHTML=ranked.map(p=>{
-    const fill=Math.max(3,100*Math.abs(p.roi||0)/maxAbs);
+    const fill=Math.min(100,Math.abs(p.roi||0));
     const perf=p.roi===null?"#99a4b4":p.roi>=0?"#ef4056":"#2867ec";
     return `<button type="button" class="rank-row" data-person="${p.id}" aria-haspopup="dialog" aria-label="${escapeHtml(p.name)} ${escapeHtml(p.asset)} 상세 보기" style="--person:${p.color};--perf:${perf}">
       ${rankBadge(p)}
