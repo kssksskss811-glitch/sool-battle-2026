@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-10-31",
-  "verified_at": "2026-10-31T09:38:04.368Z",
+  "trade_date": "2026-11-01",
+  "verified_at": "2026-11-01T09:47:56.523Z",
   "markets": {
     "NVDA": {
       "price": 204.64,
@@ -67,12 +67,12 @@
       }
     },
     "KRW-BTC": {
-      "price": 104166000,
-      "date": "2026-10-30",
+      "price": 104475000,
+      "date": "2026-10-31",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-10-31T00:00:00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-01T00:00:00Z&count=1"
       }
     }
   }
