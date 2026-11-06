@@ -1,67 +1,67 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-11-05T18:41:55+09:00",
+  "updatedAt": "2026-11-06T18:23:26+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
-      "price": 200.13,
-      "date": "2026-11-04",
+      "price": 181.6,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/nvda/history/",
       "stale": false
     },
     "TSLA": {
-      "price": 385.19,
-      "date": "2026-11-04",
+      "price": 343.69,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/tsla/history/",
       "stale": false
     },
     "AMZN": {
-      "price": 266.03,
-      "date": "2026-11-04",
+      "price": 260.21,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/amzn/history/",
       "stale": false
     },
     "GOOGL": {
-      "price": 288.93,
-      "date": "2026-11-04",
+      "price": 282.57,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/googl/history/",
       "stale": false
     },
     "KRW-BTC": {
-      "price": 108327000,
-      "date": "2026-11-04",
+      "price": 103257000,
+      "date": "2026-11-05",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-05T00:00:00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-06T00:00:00Z&count=1",
       "stale": false
     },
     "034020.KS": {
-      "price": 49300,
-      "date": "2026-11-05",
+      "price": 44700,
+      "date": "2026-11-06",
       "currency": "KRW",
       "source": "한경 마켓",
       "sourceUrl": "https://markets.hankyung.com/stock/034020",
       "stale": false
     },
     "267260.KS": {
-      "price": 401500,
-      "date": "2026-11-05",
+      "price": 366500,
+      "date": "2026-11-06",
       "currency": "KRW",
       "source": "한경 마켓",
       "sourceUrl": "https://markets.hankyung.com/stock/267260",
       "stale": false
     },
     "011200.KS": {
-      "price": 22800,
-      "date": "2026-11-05",
+      "price": 22050,
+      "date": "2026-11-06",
       "currency": "KRW",
       "source": "한경 마켓",
       "sourceUrl": "https://markets.hankyung.com/stock/011200",
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-11-05 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-11-06 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "db070d9ef1f8c89f69da59810fc2912c78a0dc40",
-    "verifiedAt": "2026-11-05T18:41:29.452000+09:00",
-    "commit": "b7ee7cb3f24e164678b3e6dafa183f4fbdebf3de"
+    "sha": "1a72a733ddc6a759aae673ec3fe5469d701743e8",
+    "verifiedAt": "2026-11-06T18:22:51+09:00",
+    "commit": "178a4b91bbff45473ecc1d5eeb64742a282906fe"
   }
 }
