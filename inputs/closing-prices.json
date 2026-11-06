@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-11-05",
-  "verified_at": "2026-11-05T09:41:29.452Z",
+  "trade_date": "2026-11-06",
+  "verified_at": "2026-11-06T09:22:51Z",
   "markets": {
     "NVDA": {
-      "price": 200.13,
-      "date": "2026-11-04",
+      "price": 181.6,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -13,8 +13,8 @@
       }
     },
     "TSLA": {
-      "price": 385.19,
-      "date": "2026-11-04",
+      "price": 343.69,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -22,8 +22,8 @@
       }
     },
     "AMZN": {
-      "price": 266.03,
-      "date": "2026-11-04",
+      "price": 260.21,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -31,8 +31,8 @@
       }
     },
     "GOOGL": {
-      "price": 288.93,
-      "date": "2026-11-04",
+      "price": 282.57,
+      "date": "2026-11-05",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -40,8 +40,8 @@
       }
     },
     "034020.KS": {
-      "price": 49300,
-      "date": "2026-11-05",
+      "price": 44700,
+      "date": "2026-11-06",
       "currency": "KRW",
       "source": {
         "name": "한경 마켓",
@@ -49,8 +49,8 @@
       }
     },
     "267260.KS": {
-      "price": 401500,
-      "date": "2026-11-05",
+      "price": 366500,
+      "date": "2026-11-06",
       "currency": "KRW",
       "source": {
         "name": "한경 마켓",
@@ -58,8 +58,8 @@
       }
     },
     "011200.KS": {
-      "price": 22800,
-      "date": "2026-11-05",
+      "price": 22050,
+      "date": "2026-11-06",
       "currency": "KRW",
       "source": {
         "name": "한경 마켓",
@@ -67,12 +67,12 @@
       }
     },
     "KRW-BTC": {
-      "price": 108327000,
-      "date": "2026-11-04",
+      "price": 103257000,
+      "date": "2026-11-05",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-05T00:00:00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-06T00:00:00Z&count=1"
       }
     }
   }
