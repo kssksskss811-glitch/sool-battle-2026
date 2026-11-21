@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-11-20",
-  "verified_at": "2026-11-20T09:48:33.675Z",
+  "trade_date": "2026-11-21",
+  "verified_at": "2026-11-21T09:55:15.716Z",
   "markets": {
     "NVDA": {
-      "price": 145.98,
-      "date": "2026-11-19",
+      "price": 125.53,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -13,8 +13,8 @@
       }
     },
     "TSLA": {
-      "price": 374.41,
-      "date": "2026-11-19",
+      "price": 345.82,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -22,8 +22,8 @@
       }
     },
     "AMZN": {
-      "price": 257.37,
-      "date": "2026-11-19",
+      "price": 246.82,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -31,8 +31,8 @@
       }
     },
     "GOOGL": {
-      "price": 272.66,
-      "date": "2026-11-19",
+      "price": 265.29,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": {
         "name": "Stock Analysis",
@@ -67,12 +67,12 @@
       }
     },
     "KRW-BTC": {
-      "price": 84250000,
-      "date": "2026-11-19",
+      "price": 81134000,
+      "date": "2026-11-20",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-20T00:00:00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-21T00:00:00Z&count=1"
       }
     }
   }
