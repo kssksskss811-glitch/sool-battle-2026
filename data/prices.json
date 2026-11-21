@@ -1,46 +1,46 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-11-20T18:48:45+09:00",
+  "updatedAt": "2026-11-21T18:55:32+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
-      "price": 145.98,
-      "date": "2026-11-19",
+      "price": 125.53,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/nvda/history/",
       "stale": false
     },
     "TSLA": {
-      "price": 374.41,
-      "date": "2026-11-19",
+      "price": 345.82,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/tsla/history/",
       "stale": false
     },
     "AMZN": {
-      "price": 257.37,
-      "date": "2026-11-19",
+      "price": 246.82,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/amzn/history/",
       "stale": false
     },
     "GOOGL": {
-      "price": 272.66,
-      "date": "2026-11-19",
+      "price": 265.29,
+      "date": "2026-11-20",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/googl/history/",
       "stale": false
     },
     "KRW-BTC": {
-      "price": 84250000,
-      "date": "2026-11-19",
+      "price": 81134000,
+      "date": "2026-11-20",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-20T00:00:00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-21T00:00:00Z&count=1",
       "stale": false
     },
     "034020.KS": {
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-11-20 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-11-21 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "5bc03a4ab38020ec8cb504e746589b76e5723c94",
-    "verifiedAt": "2026-11-20T18:48:33.675000+09:00",
-    "commit": "9db5546450a66fb039976807a4207485ae7e4a51"
+    "sha": "9f9de9b475cf5937c6bb3bf2623dcc6d8c6390b1",
+    "verifiedAt": "2026-11-21T18:55:15.716000+09:00",
+    "commit": "03b8fa823de8e3f4628236ac09a1948364887e5c"
   }
 }
