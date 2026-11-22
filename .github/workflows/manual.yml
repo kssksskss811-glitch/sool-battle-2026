@@ -95,6 +95,22 @@ jobs:
         if: steps.manual.outputs.changed == 'true' || steps.route.outputs.ui == 'true'
         with:
           path: .
+          name: github-pages-${{ github.run_attempt }}
+      - name: Wait for Pages artifact metadata
+        if: steps.manual.outputs.changed == 'true' || steps.route.outputs.ui == 'true'
+        env:
+          ARTIFACT: github-pages-${{ github.run_attempt }}
+        run: |
+          for _ in {1..12}; do
+            if curl -fsS --max-time 5 "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT" | jq -e --arg name "$ARTIFACT" '[.artifacts[] | select(.name == $name and .expired == false)] | length == 1' >/dev/null; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::Uploaded Pages artifact did not become visible in time."
+          exit 1
       - uses: actions/deploy-pages@v4
         if: steps.manual.outputs.changed == 'true' || steps.route.outputs.ui == 'true'
         id: deployment
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
