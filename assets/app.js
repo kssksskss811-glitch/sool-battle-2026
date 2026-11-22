@@ -45,6 +45,22 @@ function marketDateLabel(markets,symbols){
   if(dates.every(day=>!day))return "미확인";
   return symbols.map((symbol,i)=>symbol.replace(".KS","")+" "+(dates[i]?dates[i].slice(5).replace("-","/"):"미확인")).join(" · ");
 }
+function rankMarketDateText(markets){
+  const short=day=>day.slice(5).replace("-","/");
+  const market=symbols=>{
+    const days=symbols.map(symbol=>markets?.[symbol]?.date);
+    const known=days.filter(day=>sourceDayDate(day));
+    if(!known.length)return "—";
+    if(known.length!==days.length)return "일부";
+    return known.every(day=>day===known[0])?short(known[0]):"혼합";
+  };
+  const btc=markets?.["KRW-BTC"];
+  const close=btc?.asOf&&btc?.priceType==="spot"
+    ? (quoteTimeLabel(btc.asOf).match(/^\d{4}\.\d{2}\.\d{2}/)?.[0]??"")
+    : bitcoinCloseLabel(btc?.date);
+  const btcDay=close.match(/^\d{4}\.(\d{2})\.(\d{2})/);
+  return "미장 "+market(["NVDA","TSLA","AMZN","GOOGL"])+" · 국장 "+market(["034020.KS","267260.KS","011200.KS"])+" · 비트코인 "+(btcDay?btcDay[1]+"/"+btcDay[2]:"—");
+}
 function bitcoinCloseLabel(day){
   const parsed=sourceDayDate(day);
   if(!parsed)return "미확인";
@@ -141,6 +157,7 @@ function renderRisk() {
 }
 function renderHeader(){
   $("asOf").textContent=dataUpdateLabel(priceData?.updatedAt);
+  $("rankMarketDates").textContent=rankMarketDateText(priceData?.markets);
   $("krCloseDay").textContent=marketQuoteLabel(priceData?.markets,["034020.KS","267260.KS","011200.KS"]);
   $("usCloseDay").textContent=marketQuoteLabel(priceData?.markets,["NVDA","TSLA","AMZN","GOOGL"]);
   $("btcCandleClose").textContent=quoteBasisLabel(priceData?.markets?.["KRW-BTC"],"KRW-BTC");

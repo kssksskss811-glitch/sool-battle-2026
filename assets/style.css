@@ -313,3 +313,9 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
   .market-update-panel{padding:9px 10px;gap:6px}
   .market-update-panel .quote-dates{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Source dates stay together directly left of the price heading. */
+.rank-market-dates{grid-column:1 / 4;grid-row:1;white-space:nowrap;justify-self:start;color:#526580;font-size:11px;letter-spacing:-.12px}
+.rank-head .rank-price-heading{grid-column:4;grid-row:1 / span 2;text-align:right}
+.rank-head span:last-child{text-align:left}
+@media(max-width:600px){.rank-market-dates{font-size:9px}.rank-head{row-gap:3px}}

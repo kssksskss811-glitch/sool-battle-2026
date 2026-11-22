@@ -7,10 +7,10 @@
   <meta name="description" content="술값배틀 2026 · 누적 수익률 순위, 술값 후보, 과거 순위변동 차트">
   <title>술값배틀 2026 · 9명의 수익률 대결</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/style.css?v=footer-quotes-20261122-r2">
+  <link rel="stylesheet" href="./assets/style.css?v=rank-market-dates-20261122-r2">
   <script defer src="./assets/details.js?v=rank-status-467a953"></script>
   <script defer src="./assets/price-override.js?v=googl-20261029"></script>
-  <script defer src="./assets/app.js?v=compact-rank-20261122"></script>
+  <script defer src="./assets/app.js?v=rank-market-dates-20261122"></script>
 </head>
 <body>
 <div class="app">
@@ -42,8 +42,9 @@
         </div>
         <span class="end-date">결산 12.31</span>
       </div>
-      <div class="rank-head" aria-hidden="true">
-        <span>순위</span><span>참가자 / 종목</span><span>누적 수익률</span><span>확인된 가격 <small>(시작가)</small></span>
+      <div class="rank-head">
+        <div id="rankMarketDates" class="rank-market-dates" aria-label="시장별 가격 기준일">미장 — · 국장 — · 비트코인 —</div><span class="rank-price-heading">확인된 가격 <small>(시작가)</small></span>
+        <span>순위</span><span>참가자 / 종목</span><span>누적 수익률</span>
       </div>
       <div id="rankRows" class="rank-rows" aria-live="polite">
         <div class="loading">가격 데이터를 확인하는 중입니다...</div>
