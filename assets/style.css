@@ -211,7 +211,7 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
 .quote-date>span{white-space:nowrap}
 .quote-date strong{min-width:0;font-size:11px;line-height:1.5;color:#2c405f;overflow-wrap:anywhere}
 .quote-basis{max-width:36ch;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
-.rank-row{min-height:94px;padding-top:6px;padding-bottom:6px}
+.rank-row{min-height:68px;padding-top:4px;padding-bottom:4px}
 #verifiedAt{font-size:10px;color:#687993}
 .header-right{flex-wrap:wrap;max-width:360px}
 .schedule-caption{font-size:11px;white-space:normal}
@@ -290,4 +290,14 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
   .detail-chart-controls select{flex:1}
   .detail-chart{height:190px}
   .detail-duel{padding:11px}
+}
+
+/* Give the nine-person leaderboard room on a phone without reducing text size. */
+@media(max-width:600px){
+  .leaderboard{min-height:0;padding-top:10px}
+  .leaderboard .panel-heading{padding-bottom:7px}
+  .rank-row{min-height:60px;padding-block:3px;flex:0 0 auto}
+  .rank-row .price small{margin-top:2px}
+  .rank-row .quote-basis{line-height:1.3}
+  .rank-footer{padding-top:6px}
 }

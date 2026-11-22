@@ -73,7 +73,7 @@ function quoteBasisLabel(quote,symbol){
   }
   const source=quote.source?" · 출처 "+quote.source:" · 출처 미확인";
   if(!quote.asOf){
-    const basis=symbol==="KRW-BTC"?"완료 일봉 · 일봉 마감 "+bitcoinCloseLabel(quote.date):"확정 종가 · "+(sourceDayDate(quote.date)?quote.date.replaceAll("-","."):"기준일 미확인")+" · 실제 시각 미기록";
+    const basis=symbol==="KRW-BTC"?"완료 일봉 · 일봉 마감 "+bitcoinCloseLabel(quote.date):"확정 종가 · "+(sourceDayDate(quote.date)?quote.date.replaceAll("-","."):"기준일 미확인");
     return basis+(quote.stale?" · 이전 값 / 확인 필요":"")+source;
   }
   const sessions={day:"데이장",pre:"프리장",regular:"정규장",after:"시간외",continuous:"연속거래",daily:"일봉"};

@@ -39,7 +39,7 @@ assert.match(label(fixtures.markets['034020.KS'],'034020.KS'),/지연 15분/);
 assert.match(label(fixtures.markets.GOOGL),/지연 여부 미확인/);
 assert.match(label(fixtures.markets['KRW-BTC'],'KRW-BTC'),/BTC 현물/);
 assert.match(label({...fixtures.markets['KRW-BTC'],priceType:'daily_close',session:'daily'},'KRW-BTC'),/완료 일봉/);
-assert.match(label(prices.markets.NVDA),/확정 종가.*실제 시각 미기록/);
+assert.match(label(prices.markets.NVDA),/확정 종가 · \d{4}\.\d{2}\.\d{2}/); assert.doesNotMatch(label(prices.markets.NVDA),/실제\s*시각 미기록/);
 assert.match(label(prices.markets['KRW-BTC'],'KRW-BTC'),/완료 일봉.*09:00 KST/);
 assert.equal(run('quoteTimeLabel("2026-10-15T00:09:03Z")'),'2026.10.15 09:09:03 KST');
 assert.equal(run('quoteTimeLabel("2026-10-15T09:09:03")'),'실제 시각 미확인');
