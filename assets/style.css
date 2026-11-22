@@ -301,3 +301,15 @@ h2{font-size:19px;letter-spacing:-.8px;font-weight:900}
   .rank-row .quote-basis{line-height:1.3}
   .rank-footer{padding-top:6px}
 }
+
+
+/* Keep source and update details below the rankings and weekly chart. */
+.market-update-panel{margin-top:12px;padding:12px 14px;display:grid;gap:8px}
+.market-update-panel .quote-dates{grid-template-columns:repeat(3,minmax(0,1fr))}
+.market-update-times{display:flex;gap:4px 14px;flex-wrap:wrap;align-items:baseline;color:#687993}
+.market-update-times #asOf{flex-basis:auto;text-align:left}
+@media(max-width:600px){
+  .topbar{min-height:0;gap:6px}
+  .market-update-panel{padding:9px 10px;gap:6px}
+  .market-update-panel .quote-dates{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
