@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "trade_date": "2026-11-21",
-  "verified_at": "2026-11-21T09:55:15.716Z",
+  "trade_date": "2026-11-23",
+  "verified_at": "2026-11-23T09:55:05.076Z",
   "markets": {
     "NVDA": {
       "price": 125.53,
@@ -40,8 +40,8 @@
       }
     },
     "034020.KS": {
-      "price": 40750,
-      "date": "2026-11-20",
+      "price": 39700,
+      "date": "2026-11-23",
       "currency": "KRW",
       "source": {
         "name": "KRX KIND",
@@ -49,8 +49,8 @@
       }
     },
     "267260.KS": {
-      "price": 386500,
-      "date": "2026-11-20",
+      "price": 377500,
+      "date": "2026-11-23",
       "currency": "KRW",
       "source": {
         "name": "KRX KIND",
@@ -58,8 +58,8 @@
       }
     },
     "011200.KS": {
-      "price": 22150,
-      "date": "2026-11-20",
+      "price": 21300,
+      "date": "2026-11-23",
       "currency": "KRW",
       "source": {
         "name": "KRX KIND",
@@ -67,12 +67,12 @@
       }
     },
     "KRW-BTC": {
-      "price": 81134000,
-      "date": "2026-11-20",
+      "price": 83560000,
+      "date": "2026-11-22",
       "currency": "KRW",
       "source": {
         "name": "Upbit",
-        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-21T00:00:00Z&count=1"
+        "url": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-23T00:00:00Z&count=1"
       }
     }
   }
