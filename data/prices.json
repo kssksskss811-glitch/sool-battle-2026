@@ -1,59 +1,59 @@
 {
   "mode": "manual",
-  "updatedAt": "2026-11-25T18:25:57+09:00",
+  "updatedAt": "2026-11-26T18:26:18+09:00",
   "locked": false,
   "markets": {
     "NVDA": {
-      "price": 155.38,
-      "date": "2026-11-24",
+      "price": 149.3,
+      "date": "2026-11-25",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/nvda/history/",
       "stale": false
     },
     "TSLA": {
-      "price": 384.68,
-      "date": "2026-11-24",
+      "price": 380.14,
+      "date": "2026-11-25",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/tsla/history/",
       "stale": false
     },
     "AMZN": {
-      "price": 252.29,
-      "date": "2026-11-24",
+      "price": 244.43,
+      "date": "2026-11-25",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/amzn/history/",
       "stale": false
     },
     "GOOGL": {
-      "price": 279.05,
-      "date": "2026-11-24",
+      "price": 273.1,
+      "date": "2026-11-25",
       "currency": "USD",
       "source": "Stock Analysis",
       "sourceUrl": "https://stockanalysis.com/stocks/googl/history/",
       "stale": false
     },
     "KRW-BTC": {
-      "price": 81441000,
-      "date": "2026-11-24",
+      "price": 82005000,
+      "date": "2026-11-25",
       "currency": "KRW",
       "source": "Upbit",
-      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-25T00%3A00%3A00Z&count=1",
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&to=2026-11-26T00%3A00%3A00Z&count=1",
       "stale": false
     },
     "034020.KS": {
-      "price": 40000,
-      "date": "2026-11-25",
+      "price": 40500,
+      "date": "2026-11-26",
       "currency": "KRW",
       "source": "KRX KIND",
       "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=03402&method=searchStockPricesMain",
       "stale": false
     },
     "267260.KS": {
-      "price": 383000,
-      "date": "2026-11-25",
+      "price": 387500,
+      "date": "2026-11-26",
       "currency": "KRW",
       "source": "KRX KIND",
       "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=26726&method=searchStockPricesMain",
@@ -61,7 +61,7 @@
     },
     "011200.KS": {
       "price": 22150,
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "currency": "KRW",
       "source": "KRX KIND",
       "sourceUrl": "https://kind.krx.co.kr/common/stockprices.do?isurCd=01120&method=searchStockPricesMain",
@@ -69,11 +69,11 @@
     }
   },
   "errors": [],
-  "notes": "2026-11-25 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
+  "notes": "2026-11-26 한국시간 스냅샷입니다. 가격 기준일은 markets.date, v2 실제 시세 시각은 markets.asOf, 확인 시각은 manualInput.verifiedAt, 저장 시각은 updatedAt입니다. 시세 API를 호출하지 않았습니다.",
   "manualInput": {
     "path": "inputs/closing-prices.json",
-    "sha": "66c0e84b04a9ab533ddb7cded0cee04549a36f27",
-    "verifiedAt": "2026-11-25T18:25:42.385000+09:00",
-    "commit": "0439370534f675f60b655760b90ef91f0bc885ad"
+    "sha": "7cc3505b4bbc53681722e6c1879a62113ec31e5d",
+    "verifiedAt": "2026-11-26T18:25:58.189000+09:00",
+    "commit": "ac8004521df9893d146c20fe62a42893cb7973b3"
   }
 }
